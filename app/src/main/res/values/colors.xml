@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">@color/primary_purple</color>
+    <color name="colorPrimaryDark">@color/purple_heart</color>
+    <color name="colorAccent">@color/primary_purple</color>
+
+    <color name="primary_purple">#9027b0</color>
+    <color name="primary_orange">#f78323</color>
+    <color name="primary_green">#84d43e</color>
+
+    <color name="purple_heart">#7b2196</color>
+</resources>
