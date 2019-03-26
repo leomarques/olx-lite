@@ -1,12 +1,15 @@
-package br.com.olx.android
+package br.com.olx.listing
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
+import br.com.olx.data.AdRoom
+import br.com.olx.data.AdSearchResult
+import br.com.olx.data.Repository
 
-class MainActivityViewModel(private val repository: Repository) : ViewModel() {
+class ListingViewModel(private val repository: Repository) : ViewModel() {
 
     private val queryLiveData = MutableLiveData<String>()
 
@@ -14,7 +17,7 @@ class MainActivityViewModel(private val repository: Repository) : ViewModel() {
         repository.search()
     }
 
-    val ads: LiveData<PagedList<Ad>> = Transformations.switchMap(adResult) {
+    val ads: LiveData<PagedList<AdRoom>> = Transformations.switchMap(adResult) {
         it.data
     }
 

@@ -1,4 +1,4 @@
-package br.com.olx.android
+package br.com.olx.data
 
 import android.content.Context
 import androidx.room.Database
@@ -6,20 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [Ad::class],
+    entities = [AdRoom::class],
     version = 1,
     exportSchema = false
 )
-abstract class AdDatabase : RoomDatabase() {
+abstract class AdRoomDatabase : RoomDatabase() {
 
-    abstract fun adsDao(): AdDao
+    abstract fun adsDao(): AdRoomDao
 
     companion object {
 
         @Volatile
-        private var INSTANCE: AdDatabase? = null
+        private var INSTANCE: AdRoomDatabase? = null
 
-        fun getInstance(context: Context): AdDatabase =
+        fun getInstance(context: Context): AdRoomDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE
                     ?: buildDatabase(context).also { INSTANCE = it }
@@ -27,7 +27,7 @@ abstract class AdDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context.applicationContext,
-                AdDatabase::class.java, "Ad.db")
+                AdRoomDatabase::class.java, "AdRoom.db")
                 .build()
     }
 }

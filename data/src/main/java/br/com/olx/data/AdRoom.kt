@@ -1,7 +1,7 @@
-package br.com.olx.android
+package br.com.olx.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "ads")
-data class Ad(@PrimaryKey val id: String)
+data class AdRoom(@PrimaryKey val id: String)

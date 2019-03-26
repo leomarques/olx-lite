@@ -1,16 +1,17 @@
-package br.com.olx.android
+package br.com.olx.listing
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import br.com.olx.data.AdRoom
 
 class AdViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val adItemTextView: TextView = view.findViewById(R.id.adItemTextView)
 
-    fun bind(ad: Ad?) {
+    fun bind(ad: AdRoom?) {
         if (ad == null) {
             adItemTextView.text = "ad == null"
         } else {

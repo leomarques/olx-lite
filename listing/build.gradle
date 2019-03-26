@@ -1,0 +1,8 @@
+apply from: "$rootDir/apply-dynamic-feature.gradle"
+
+dependencies {
+    implementation project(':data')
+
+    implementation libraries.cardview
+    implementation libraries.paging
+}

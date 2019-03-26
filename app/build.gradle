@@ -2,48 +2,39 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply from: '../dependencies.gradle'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion versions.compileSdk
+
     defaultConfig {
-        applicationId "br.com.olx.android"
-        minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        applicationId "br.com.olx.lite"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.versionCode
+        versionName versions.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {}
     }
+
+    dynamicFeatures = [":listing"]
 }
 
 dependencies {
-    def lifecycle_version = "2.0.0"
-    def paging_version = "1.0.1"
-    def room_version = "2.1.0-alpha04"
-    def cardview_version = "28.0.0"
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
-    implementation 'androidx.core:core-ktx:1.1.0-alpha04'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-
-    //CardView
-    implementation "com.android.support:cardview-v7:$cardview_version"
-    //Lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    //Paging
-    implementation "android.arch.paging:runtime:$paging_version"
-    //Room
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    implementation libraries.kotlin
+    api libraries.appcompat
+    api libraries.ktx
+    api libraries.constraintLayout
+    api libraries.lifecycle
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.2-alpha01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
+    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
 }

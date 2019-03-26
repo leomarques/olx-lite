@@ -1,4 +1,4 @@
-package br.com.olx.android
+package br.com.olx.data
 
 import androidx.paging.DataSource
 import androidx.room.Dao
@@ -7,11 +7,11 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface AdDao {
+interface AdRoomDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(posts: List<Ad>)
+    fun insert(posts: List<AdRoom>)
 
     @Query("SELECT * FROM ads")
-    fun allAds(): DataSource.Factory<Int, Ad>
+    fun allAds(): DataSource.Factory<Int, AdRoom>
 }

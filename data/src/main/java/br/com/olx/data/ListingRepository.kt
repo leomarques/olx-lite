@@ -1,9 +1,9 @@
-package br.com.olx.android
+package br.com.olx.data
 
 import androidx.paging.LivePagedListBuilder
 
 class ListingRepository(
-    private val service: AdService,
+    private val service: AdRoomService,
     private val cache: LocalCache
 ) : Repository {
     override fun search(): AdSearchResult {
@@ -14,7 +14,9 @@ class ListingRepository(
         val networkErrors = boundaryCallback.networkErrors
 
         // Get the paged list
-        val data = LivePagedListBuilder(dataSourceFactory, DATABASE_PAGE_SIZE)
+        val data = LivePagedListBuilder(dataSourceFactory,
+            DATABASE_PAGE_SIZE
+        )
             .setBoundaryCallback(boundaryCallback)
             .build()
 

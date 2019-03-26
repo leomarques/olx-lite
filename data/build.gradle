@@ -1,0 +1,10 @@
+apply from: "$rootDir/apply-android-lib.gradle"
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    api libraries.paging
+    api libraries.room
+    kapt libraries.roomcompiler
+
+    testImplementation 'junit:junit:4.12'
+}

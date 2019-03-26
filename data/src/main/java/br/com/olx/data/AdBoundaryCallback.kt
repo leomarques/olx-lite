@@ -1,4 +1,4 @@
-package br.com.olx.android
+package br.com.olx.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 
 class AdBoundaryCallback(
-    private val service: AdService,
+    private val service: AdRoomService,
     private val cache: LocalCache
-) : PagedList.BoundaryCallback<Ad>() {
+) : PagedList.BoundaryCallback<AdRoom>() {
 
     companion object {
         private const val NETWORK_PAGE_SIZE = 50
@@ -30,7 +30,7 @@ class AdBoundaryCallback(
         requestAndSaveData()
     }
 
-    override fun onItemAtEndLoaded(itemAtEnd: Ad) {
+    override fun onItemAtEndLoaded(itemAtEnd: AdRoom) {
         Log.d("oitdbem", "onItemAtEndLoaded")
         requestAndSaveData()
     }
@@ -39,14 +39,19 @@ class AdBoundaryCallback(
         if (isRequestInProgress) return
 
         isRequestInProgress = true
-        searchRepos(service, lastRequestedPage, NETWORK_PAGE_SIZE, { ads ->
-            cache.insert(ads) {
-                lastRequestedPage++
+        searchRepos(
+            service,
+            lastRequestedPage,
+            NETWORK_PAGE_SIZE,
+            { ads ->
+                cache.insert(ads) {
+                    lastRequestedPage++
+                    isRequestInProgress = false
+                }
+            },
+            { error ->
+                _networkErrors.postValue(error)
                 isRequestInProgress = false
-            }
-        }, { error ->
-            _networkErrors.postValue(error)
-            isRequestInProgress = false
-        })
+            })
     }
 }

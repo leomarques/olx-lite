@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">olx-lite</string>
+    <string name="app_name">OLX Lite</string>
+    <string name="title_listing">Listing</string>
 </resources>
