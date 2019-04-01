@@ -1,11 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:dist="http://schemas.android.com/apk/distribution"
           package="br.com.olx.listing">
+
     <dist:module
-            dist:onDemand="false"
             dist:instant="true"
+            dist:onDemand="false"
             dist:title="@string/title_listing">
         <dist:fusing dist:include="false"/>
     </dist:module>
-</manifest>
 
+    <application>
+        <activity android:name=".ListingActivity">
+        </activity>
+    </application>
+
+</manifest>

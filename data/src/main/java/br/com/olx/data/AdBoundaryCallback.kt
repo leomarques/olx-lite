@@ -4,9 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
+import br.com.olx.data.local.AdRoom
+import br.com.olx.data.local.LocalCache
+import br.com.olx.data.remote.AdService
+import br.com.olx.data.remote.searchRepos
 
 class AdBoundaryCallback(
-    private val service: AdRoomService,
+    private val service: AdService,
     private val cache: LocalCache
 ) : PagedList.BoundaryCallback<AdRoom>() {
 
@@ -44,9 +48,13 @@ class AdBoundaryCallback(
             lastRequestedPage,
             NETWORK_PAGE_SIZE,
             { ads ->
-                cache.insert(ads) {
-                    lastRequestedPage++
-                    isRequestInProgress = false
+                ads.map { adRemote ->
+                    AdRoom(adRemote.id)
+                }.also {
+                    cache.insert(it) {
+                        lastRequestedPage++
+                        isRequestInProgress = false
+                    }
                 }
             },
             { error ->

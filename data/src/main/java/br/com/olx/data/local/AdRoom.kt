@@ -1,4 +1,4 @@
-package br.com.olx.data
+package br.com.olx.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

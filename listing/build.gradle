@@ -1,4 +1,6 @@
 apply from: "$rootDir/apply-dynamic-feature.gradle"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     implementation project(':data')

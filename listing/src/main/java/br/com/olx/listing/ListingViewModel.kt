@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
-import br.com.olx.data.AdRoom
+import br.com.olx.data.local.AdRoom
 import br.com.olx.data.AdSearchResult
 import br.com.olx.data.Repository
 

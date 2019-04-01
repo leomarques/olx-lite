@@ -1,4 +1,4 @@
-package br.com.olx.data
+package br.com.olx.data.local
 
 import androidx.paging.DataSource
 import androidx.room.Dao

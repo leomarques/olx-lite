@@ -1,4 +1,4 @@
-package br.com.olx.data
+package br.com.olx.data.local
 
 import androidx.paging.DataSource
 import java.util.concurrent.Executor
@@ -9,7 +9,7 @@ class LocalCache(
 ) {
     fun insert(ads: List<AdRoom>, insertFinished: () -> Unit) {
         ioExecutor.execute {
-            adRoomDao.insert(ads)
+            adRoomDao.insert(ads.map { AdRoom(it.id) })
             insertFinished()
         }
     }

@@ -1,6 +1,9 @@
 package br.com.olx.data
 
 import android.content.Context
+import br.com.olx.data.local.AdRoomDatabase
+import br.com.olx.data.local.LocalCache
+import br.com.olx.data.remote.AdService
 import java.util.concurrent.Executors
 
 object Injection {
@@ -11,7 +14,7 @@ object Injection {
 
     fun provideRepository(context: Context): Repository {
         return ListingRepository(
-            AdRoomService.create(),
+            AdService.create(),
             provideCache(context)
         )
     }

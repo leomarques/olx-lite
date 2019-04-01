@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.olx.data.AdRoom
+import br.com.olx.data.local.AdRoom
 import kotlinx.android.synthetic.main.listing_fragment.*
 
 class ListingFragment : Fragment() {

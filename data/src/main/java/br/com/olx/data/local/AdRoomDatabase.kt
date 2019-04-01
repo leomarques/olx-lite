@@ -1,4 +1,4 @@
-package br.com.olx.data
+package br.com.olx.data.local
 
 import android.content.Context
 import androidx.room.Database

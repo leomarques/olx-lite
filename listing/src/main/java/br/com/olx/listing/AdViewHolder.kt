@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import br.com.olx.data.AdRoom
+import br.com.olx.data.local.AdRoom
 
 class AdViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
