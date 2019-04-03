@@ -9,13 +9,13 @@ import br.com.olx.data.local.AdRoom
 
 class AdViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    private val adItemTextView: TextView = view.findViewById(R.id.adItemTextView)
+    private val textView: TextView = view.findViewById(R.id.price)
 
     fun bind(ad: AdRoom?) {
         if (ad == null) {
-            adItemTextView.text = "ad == null"
+            textView.text = "ad == null"
         } else {
-            adItemTextView.text = ad.id
+            textView.text = "R$" + ad.id
         }
     }
 

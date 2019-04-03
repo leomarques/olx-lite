@@ -10,11 +10,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         try {
-            val intent = Intent(
-                this,
-                Class.forName("br.com.olx.listing.ListingActivity")
-            )
+            val intent = Intent().setClassName(this,
+                "br.com.olx.listing.ListingActivity")
             startActivity(intent)
+            finish()
         } catch (e: ClassNotFoundException) {
             e.printStackTrace()
         }

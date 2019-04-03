@@ -9,8 +9,14 @@ class LocalCache(
 ) {
     fun insert(ads: List<AdRoom>, insertFinished: () -> Unit) {
         ioExecutor.execute {
-            adRoomDao.insert(ads.map { AdRoom(it.id) })
+            adRoomDao.insert(ads.map { it.copy() })
             insertFinished()
+        }
+    }
+
+    fun clear() {
+        ioExecutor.execute {
+            adRoomDao.clear()
         }
     }
 

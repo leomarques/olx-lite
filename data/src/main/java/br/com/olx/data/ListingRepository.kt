@@ -10,6 +10,8 @@ class ListingRepository(
 ) : Repository {
 
     override fun search(): AdSearchResult {
+        cache.clear()
+
         val dataSourceFactory = cache.allAds()
 
         // Construct the boundary callback

@@ -1,6 +1,5 @@
 package br.com.olx.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
@@ -10,8 +9,8 @@ import br.com.olx.data.remote.AdService
 import br.com.olx.data.remote.searchRepos
 
 class AdBoundaryCallback(
-    private val service: AdService,
-    private val cache: LocalCache
+        private val service: AdService,
+        private val cache: LocalCache
 ) : PagedList.BoundaryCallback<AdRoom>() {
 
     companion object {
@@ -30,12 +29,10 @@ class AdBoundaryCallback(
     private var isRequestInProgress = false
 
     override fun onZeroItemsLoaded() {
-        Log.d("oitdbem", "onZeroItemsLoaded")
         requestAndSaveData()
     }
 
     override fun onItemAtEndLoaded(itemAtEnd: AdRoom) {
-        Log.d("oitdbem", "onItemAtEndLoaded")
         requestAndSaveData()
     }
 
@@ -44,22 +41,29 @@ class AdBoundaryCallback(
 
         isRequestInProgress = true
         searchRepos(
-            service,
-            lastRequestedPage,
-            NETWORK_PAGE_SIZE,
-            { ads ->
-                ads.map { adRemote ->
-                    AdRoom(adRemote.id)
-                }.also {
-                    cache.insert(it) {
-                        lastRequestedPage++
-                        isRequestInProgress = false
+                service,
+                lastRequestedPage,
+                NETWORK_PAGE_SIZE,
+                { ads ->
+                    ads.map { adRemote ->
+                        AdRoom(
+                                adRemote.id,
+                                adRemote.thumbUrl,
+                                adRemote.title,
+                                adRemote.price,
+                                adRemote.date,
+                                adRemote.location
+                        )
+                    }.also {
+                        cache.insert(it) {
+                            lastRequestedPage++
+                            isRequestInProgress = false
+                        }
                     }
-                }
-            },
-            { error ->
-                _networkErrors.postValue(error)
-                isRequestInProgress = false
-            })
+                },
+                { error ->
+                    _networkErrors.postValue(error)
+                    isRequestInProgress = false
+                })
     }
 }

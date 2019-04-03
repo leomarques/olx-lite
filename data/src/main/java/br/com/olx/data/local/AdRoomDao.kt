@@ -14,4 +14,7 @@ interface AdRoomDao {
 
     @Query("SELECT * FROM ads")
     fun allAds(): DataSource.Factory<Int, AdRoom>
+
+    @Query("DELETE FROM ads")
+    fun clear()
 }
