@@ -2,7 +2,7 @@ apply from: "$rootDir/apply-android-lib.gradle"
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    api libraries.paging
+    implementation libraries.paging
     api libraries.room
     kapt libraries.roomcompiler
 
