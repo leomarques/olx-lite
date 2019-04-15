@@ -1,15 +1,17 @@
 package br.com.olx.listing
 
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import br.com.olx.android.FontProvider
 import br.com.olx.android.imageloader.ImageLoader
 import br.com.olx.data.local.AdRoom
-import java.lang.Exception
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,17 +22,29 @@ class AdViewHolder(view: View, private val context: Context, private val imageLo
     private val price: TextView = view.findViewById(R.id.price)
     private val date: TextView = view.findViewById(R.id.date)
     private val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
+    private var placeholder: Drawable? = null
+
+    init {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            placeholder = context.getDrawable(R.drawable.pattern_listing_bg)
+        }
+    }
 
     fun bind(ad: AdRoom?) {
         if (ad != null) {
             title.text = ad.title
+            title.typeface = FontProvider.getNunitoSansRegularTypeFace(context)
+
             price.text = ad.price
+            price.typeface = FontProvider.getNunitoSansBoldTypeFace(context)
 
             val formattedDate = formatDate(ad.date)
             date.text = formattedDate
+            date.typeface = FontProvider.getNunitoSansRegularTypeFace(context)
 
-            if (ad.thumbUrl.isNotEmpty())
-                imageLoader.loadImage(context, ad.thumbUrl, thumbnail)
+            if (ad.thumbUrl.isNotEmpty()) {
+                imageLoader.loadImage(context, ad.thumbUrl, thumbnail, placeholder)
+            }
         }
     }
 
@@ -41,7 +55,7 @@ class AdViewHolder(view: View, private val context: Context, private val imageLo
             val stampTime = timeStamp.time
             val stampDate = Date(stampTime)
             val locale = Locale("pt", "BR")
-            val sdf = SimpleDateFormat("dd 'de' MMMM',' HH:mm", locale)
+            val sdf = SimpleDateFormat("dd 'de' MMMM 'às' HH:mm", locale)
             sdf.format(stampDate)
         } catch (e: Exception) {
             ""
