@@ -4,24 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.olx.android.imageloader.GlideImageLoader
+import br.com.olx.data.Injection
 import br.com.olx.data.local.AdRoom
 import kotlinx.android.synthetic.main.listing_fragment.*
 
 class ListingFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ListingFragment()
-    }
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.listing_fragment, container, false)
     }
@@ -30,30 +29,46 @@ class ListingFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         val viewModel = ViewModelProviders.of(
-            this,
-            Injection.provideViewModelFactory(activity!!)
+                this,
+                ViewModelFactory(Injection.provideRepository(activity!!))
         ).get(ListingViewModel::class.java)
 
         adList.layoutManager = LinearLayoutManager(context)
 
-        val adapter = AdsAdapter()
+        val adapter = AdsAdapter(GlideImageLoader())
         adList.adapter = adapter
 
         viewModel.ads.observe(this, Observer<PagedList<AdRoom>> {
-            showEmptyList(it?.size == 0)
-            adapter.submitList(it)
+            if (it == null || it.size == 0) {
+                showList(false)
+                showEmptyListMessage(true)
+                showLoading(false)
+            } else {
+                showList(true)
+                showEmptyListMessage(false)
+                showLoading(false)
+
+                adapter.submitList(it)
+            }
+        })
+
+        viewModel.networkErrors.observe(this, Observer {
+            val errorMsg = if (it.length > 10) it.subSequence(0, 20) else it
+            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
         })
 
         viewModel.searchAds()
     }
 
-    private fun showEmptyList(show: Boolean) {
-        if (show) {
-            emptyList.visibility = View.VISIBLE
-            adList.visibility = View.GONE
-        } else {
-            emptyList.visibility = View.GONE
-            adList.visibility = View.VISIBLE
-        }
+    private fun showList(show: Boolean) {
+        adList.visibility = if (show) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun showEmptyListMessage(show: Boolean) {
+        emptyList.visibility = if (show) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun showLoading(show: Boolean) {
+        progressBar.visibility = if (show) View.VISIBLE else View.INVISIBLE
     }
 }

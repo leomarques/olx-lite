@@ -5,13 +5,11 @@ import br.com.olx.data.local.LocalCache
 import br.com.olx.data.remote.AdService
 
 class ListingRepository(
-    private val service: AdService,
-    private val cache: LocalCache
+        private val service: AdService,
+        private val cache: LocalCache
 ) : Repository {
 
     override fun search(): AdSearchResult {
-        cache.clear()
-
         val dataSourceFactory = cache.allAds()
 
         // Construct the boundary callback
@@ -20,17 +18,17 @@ class ListingRepository(
 
         // Get the paged list
         val data = LivePagedListBuilder(
-            dataSourceFactory,
-            DATABASE_PAGE_SIZE
+                dataSourceFactory,
+                DATABASE_PAGE_SIZE
         )
-            .setBoundaryCallback(boundaryCallback)
-            .build()
+                .setBoundaryCallback(boundaryCallback)
+                .build()
 
         // Get the network errors exposed by the boundary callback
         return AdSearchResult(data, networkErrors)
     }
 
     companion object {
-        private const val DATABASE_PAGE_SIZE = 20
+        private const val DATABASE_PAGE_SIZE = 25
     }
 }

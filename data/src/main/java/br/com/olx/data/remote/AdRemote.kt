@@ -1,10 +1,13 @@
 package br.com.olx.data.remote
 
+import br.com.olx.data.remote.topazio.Location
+import br.com.olx.data.remote.topazio.Thumbnail
+
 data class AdRemote(
-    val id: String,
-    val thumbUrl: String,
-    val title: String,
-    val price: String,
-    val date: String,
-    val location: String
+        val listId: String?,
+        val subject: String?,
+        val time: Long?,
+        val price: String?,
+        val location: Location?,
+        val thumbnail: Thumbnail?
 )

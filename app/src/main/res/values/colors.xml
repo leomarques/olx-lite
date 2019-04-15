@@ -10,4 +10,7 @@
     <color name="primary_green">#84d43e</color>
 
     <color name="purple_heart">#7b2196</color>
+    <color name="gray">#A0A0A0</color>
+    <color name="light_gray">#e2e2e2</color>
+    <color name="lighter_gray">#f8f8f8</color>
 </resources>

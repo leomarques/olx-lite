@@ -2,9 +2,10 @@ apply from: "$rootDir/apply-android-lib.gradle"
 apply plugin: 'kotlin-kapt'
 
 dependencies {
+    implementation libraries.coroutines
+    implementation libraries.okhttp
+    implementation libraries.gson
     implementation libraries.paging
     api libraries.room
     kapt libraries.roomcompiler
-
-    testImplementation 'junit:junit:4.12'
 }

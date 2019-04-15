@@ -4,12 +4,13 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import br.com.olx.android.imageloader.ImageLoader
 import br.com.olx.data.local.AdRoom
 
-class AdsAdapter : PagedListAdapter<AdRoom, RecyclerView.ViewHolder>(AD_COMPARATOR) {
+class AdsAdapter(private val imageLoader: ImageLoader) : PagedListAdapter<AdRoom, RecyclerView.ViewHolder>(AD_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return AdViewHolder.create(parent)
+        return AdViewHolder.create(parent, imageLoader)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

@@ -5,20 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import br.com.olx.data.local.AdRoom
 import br.com.olx.data.local.LocalCache
+import br.com.olx.data.remote.AdRemote
 import br.com.olx.data.remote.AdService
-import br.com.olx.data.remote.searchRepos
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class AdBoundaryCallback(
         private val service: AdService,
         private val cache: LocalCache
 ) : PagedList.BoundaryCallback<AdRoom>() {
-
-    companion object {
-        private const val NETWORK_PAGE_SIZE = 50
-    }
-
-    // keep the last requested page. When the request is successful, increment the page number.
-    private var lastRequestedPage = 1
 
     private val _networkErrors = MutableLiveData<String>()
     // LiveData of network errors.
@@ -40,30 +35,38 @@ class AdBoundaryCallback(
         if (isRequestInProgress) return
 
         isRequestInProgress = true
-        searchRepos(
-                service,
-                lastRequestedPage,
-                NETWORK_PAGE_SIZE,
-                { ads ->
-                    ads.map { adRemote ->
-                        AdRoom(
-                                adRemote.id,
-                                adRemote.thumbUrl,
-                                adRemote.title,
-                                adRemote.price,
-                                adRemote.date,
-                                adRemote.location
-                        )
-                    }.also {
-                        cache.insert(it) {
-                            lastRequestedPage++
-                            isRequestInProgress = false
+
+        GlobalScope.launch {
+            service.searchAds(
+                    { ads ->
+                        ads.map { adRemote ->
+                            convertAdRemoteToAdRoom(adRemote)
+                        }.also {
+                            cache.insert(it) {
+                                isRequestInProgress = false
+                            }
                         }
+                    },
+                    { error ->
+                        _networkErrors.postValue(error)
+                        isRequestInProgress = false
                     }
-                },
-                { error ->
-                    _networkErrors.postValue(error)
-                    isRequestInProgress = false
-                })
+            )
+        }
+    }
+
+    private fun convertAdRemoteToAdRoom(adRemote: AdRemote): AdRoom {
+        val thumbUrl = if (adRemote.thumbnail != null)
+            "${adRemote.thumbnail.baseUrl}/images${adRemote.thumbnail.path}"
+        else ""
+
+        return AdRoom(
+                adRemote.listId ?: "",
+                thumbUrl,
+                adRemote.subject ?: "",
+                adRemote.price ?: "",
+                adRemote.time?.toString() ?: "",
+                adRemote.location?.neighbourhood ?: ""
+        )
     }
 }
