@@ -11,6 +11,7 @@ import okhttp3.RequestBody
 
 class TopazioService : AdService {
 
+    private val endpointUrl = "http://advil-router.us-east-1.elasticbeanstalk.com/"
     private var page: String? = null
     private var pageCount = 0
 
@@ -25,7 +26,7 @@ class TopazioService : AdService {
 
         ologx("searchAds $page - count: ${pageCount++}")
 
-        post("http://advil-router.us-east-1.elasticbeanstalk.com/", query, { response ->
+        post(endpointUrl, query, { response ->
             try {
                 val jsonResponse = Gson().fromJson<TopazioResponse>(response, TopazioResponse::class.java)
 
