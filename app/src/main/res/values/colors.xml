@@ -2,15 +2,15 @@
 <resources>
 
     <color name="colorPrimary">@color/primary_purple</color>
-    <color name="colorPrimaryDark">@color/purple_heart</color>
+    <color name="colorPrimaryDark">@color/purple_dark</color>
     <color name="colorAccent">@color/primary_purple</color>
 
     <color name="primary_purple">#9027b0</color>
     <color name="primary_orange">#f78323</color>
     <color name="primary_green">#84d43e</color>
 
-    <color name="purple_heart">#7b2196</color>
+    <color name="purple_dark">#5e0080</color>
+    <color name="purple_light">#c45be3</color>
     <color name="gray">#A0A0A0</color>
-    <color name="light_gray">#e2e2e2</color>
-    <color name="lighter_gray">#f8f8f8</color>
+    <color name="gray_light">#f2f2f2</color>
 </resources>
