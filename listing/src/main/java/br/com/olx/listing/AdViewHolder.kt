@@ -1,5 +1,6 @@
 package br.com.olx.listing
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -20,16 +21,19 @@ class AdViewHolder(view: View, private val context: Context, private val imageLo
 
     private val title: TextView = view.findViewById(R.id.title)
     private val price: TextView = view.findViewById(R.id.price)
-    private val date: TextView = view.findViewById(R.id.date)
+    private val metainfo: TextView = view.findViewById(R.id.metainfo)
     private val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
     private var placeholder: Drawable? = null
+    private var errorPlaceholder: Drawable? = null
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             placeholder = context.getDrawable(R.drawable.pattern_listing_bg)
+            errorPlaceholder = context.getDrawable(R.drawable.pattern_listing_new_bg)
         }
     }
 
+    @SuppressLint("SetTextI18n")
     fun bind(ad: AdRoom?) {
         if (ad != null) {
             title.text = ad.title
@@ -39,11 +43,12 @@ class AdViewHolder(view: View, private val context: Context, private val imageLo
             price.typeface = FontProvider.getNunitoSansBoldTypeFace(context)
 
             val formattedDate = formatDate(ad.date)
-            date.text = formattedDate
-            date.typeface = FontProvider.getNunitoSansRegularTypeFace(context)
+
+            metainfo.text = formattedDate + if (ad.location.isNotEmpty()) ", ${ad.location}" else ""
+            metainfo.typeface = FontProvider.getNunitoSansRegularTypeFace(context)
 
             if (ad.thumbUrl.isNotEmpty()) {
-                imageLoader.loadImage(context, ad.thumbUrl, thumbnail, placeholder)
+                imageLoader.loadImage(context, ad.thumbUrl, thumbnail, placeholder, errorPlaceholder)
             }
         }
     }
