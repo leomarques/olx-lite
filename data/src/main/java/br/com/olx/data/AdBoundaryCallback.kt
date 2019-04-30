@@ -66,7 +66,8 @@ class AdBoundaryCallback(
                 adRemote.subject ?: "",
                 adRemote.price ?: "",
                 adRemote.time?.toString() ?: "",
-                adRemote.location?.neighbourhood ?: ""
+                adRemote.location?.neighbourhood ?: "",
+                adRemote.oldPrice ?: ""
         )
     }
 }

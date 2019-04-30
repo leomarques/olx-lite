@@ -25,6 +25,7 @@ class AdViewHolder(view: View, private val context: Context, private val imageLo
     private val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
     private var placeholder: Drawable? = null
     private var errorPlaceholder: Drawable? = null
+    private var arrowDown: ImageView = view.findViewById(R.id.arrow_down)
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -42,6 +43,8 @@ class AdViewHolder(view: View, private val context: Context, private val imageLo
             price.text = ad.price
             price.typeface = FontProvider.getNunitoSansBoldTypeFace(context)
 
+            arrowDown.visibility = if (shouldShowArrowDown(ad.price, ad.oldPrice)) View.VISIBLE else View.GONE
+
             val formattedDate = formatDate(ad.date)
 
             metainfo.text = formattedDate + if (ad.location.isNotEmpty()) ", ${ad.location}" else ""
@@ -52,6 +55,9 @@ class AdViewHolder(view: View, private val context: Context, private val imageLo
             }
         }
     }
+
+    private fun shouldShowArrowDown(price: String, oldPrice: String) =
+            oldPrice.isNotEmpty() && price.isNotEmpty() && price < oldPrice
 
     private fun formatDate(date: String): String {
         return try {

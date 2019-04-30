@@ -52,6 +52,18 @@
             card_view:layout_constraintTop_toBottomOf="@+id/title"
             card_view:layout_constraintVertical_bias="0.5" />
 
+        <ImageView
+            android:id="@+id/arrow_down"
+            android:layout_width="13dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/arrow_down"
+            android:visibility="gone"
+            card_view:layout_constraintBottom_toBottomOf="@+id/price"
+            card_view:layout_constraintStart_toEndOf="@+id/price"
+            card_view:layout_constraintTop_toTopOf="@+id/price" />
+
         <TextView
             android:id="@+id/metainfo"
             android:layout_width="0dp"

@@ -53,7 +53,8 @@ class TopazioService : AdService {
                 it.origListTime,
                 it.priceValue,
                 it.location,
-                it.thumbnail
+                it.thumbnail,
+                it.oldPrice
         )
     }
 
