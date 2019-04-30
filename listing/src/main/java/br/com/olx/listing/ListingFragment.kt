@@ -52,6 +52,7 @@ class ListingFragment : Fragment() {
         viewModel.networkErrors.observe(this, Observer {
             val errorMsg = if (it.length >= 15) it.subSequence(0, 15) else it
             Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+            showLoading(false)
         })
 
         viewModel.searchAds()

@@ -4,6 +4,9 @@ import br.com.olx.data.ologx
 import br.com.olx.data.remote.AdRemote
 import br.com.olx.data.remote.AdService
 import com.google.gson.Gson
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -15,7 +18,7 @@ class TopazioService : AdService {
     private var page: String? = null
     private var pageCount = 0
 
-    override fun searchAds(onSuccess: (ads: List<AdRemote>) -> Unit, onError: (error: String) -> Unit) {
+    override fun searchAds(onSuccess: (ads: List<AdRemote>) -> Unit, onError: (error: String) -> Unit, retry: Int) {
         page = if (page == null) {
             ""
         } else {
@@ -24,7 +27,7 @@ class TopazioService : AdService {
 
         val query = "{\"query\":\"query getAdsFromQueryString(\$queryString: String!) {    ads(queryString: \$queryString) {      pagination      ads {        listId        rankId        lastBumpAgeSecs        isFavorited        subject        origListTime        priceValue        oldPrice        professionalAd        featured        location {          neighbourhood          municipality          uf        }        images {          baseUrl          path        }        properties {          name          value        }        thumbnail {          baseUrl          path        }        user {          name          accountId        }        phone {          phone          phoneHidden          phoneVerified        }        adReply      }    }  }  \",\"variables\":{\"queryString\":\"$page&lim=25\"},\"operationName\":\"getAdsFromQueryString\"}"
 
-        ologx("searchAds $page - count: ${pageCount++}")
+        ologx("searchAds $page - count: ${pageCount++}, retry: $retry")
 
         post(endpointUrl, query, { response ->
             try {
@@ -42,7 +45,14 @@ class TopazioService : AdService {
                 onError("Error parsing response")
             }
         }, { error ->
-            onError(error)
+            if (retry < 3) {
+                GlobalScope.launch {
+                    delay(2000)
+                    searchAds(onSuccess, onError, retry + 1)
+                }
+            } else {
+                onError(error)
+            }
         })
     }
 

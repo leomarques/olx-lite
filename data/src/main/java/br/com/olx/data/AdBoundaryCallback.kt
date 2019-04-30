@@ -50,7 +50,7 @@ class AdBoundaryCallback(
                     { error ->
                         _networkErrors.postValue(error)
                         isRequestInProgress = false
-                    }
+                    }, 0
             )
         }
     }
