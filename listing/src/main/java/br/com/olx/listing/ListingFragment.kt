@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.olx.android.imageloader.GlideImageLoader
 import br.com.olx.data.Injection
 import br.com.olx.data.local.AdRoom
+import br.com.olx.data.ologx
 import kotlinx.android.synthetic.main.listing_fragment.*
 
 class ListingFragment : Fragment() {
@@ -39,13 +40,9 @@ class ListingFragment : Fragment() {
         adList.adapter = adapter
 
         viewModel.ads.observe(this, Observer<PagedList<AdRoom>> {
-            if (it == null || it.size == 0) {
-                showList(false)
-                showEmptyListMessage(true)
-                showLoading(false)
-            } else {
+            if (it.size != 0) {
+                ologx("${it.size}")
                 showList(true)
-                showEmptyListMessage(false)
                 showLoading(false)
 
                 adapter.submitList(it)
@@ -53,7 +50,7 @@ class ListingFragment : Fragment() {
         })
 
         viewModel.networkErrors.observe(this, Observer {
-            val errorMsg = if (it.length > 10) it.subSequence(0, 20) else it
+            val errorMsg = if (it.length >= 15) it.subSequence(0, 15) else it
             Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
         })
 
@@ -62,10 +59,6 @@ class ListingFragment : Fragment() {
 
     private fun showList(show: Boolean) {
         adList.visibility = if (show) View.VISIBLE else View.INVISIBLE
-    }
-
-    private fun showEmptyListMessage(show: Boolean) {
-        emptyList.visibility = if (show) View.VISIBLE else View.INVISIBLE
     }
 
     private fun showLoading(show: Boolean) {
