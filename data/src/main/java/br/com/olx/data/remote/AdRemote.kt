@@ -10,5 +10,6 @@ data class AdRemote(
         val price: String?,
         val location: Location?,
         val thumbnail: Thumbnail?,
-        val oldPrice: String?
+        val oldPrice: String?,
+        val isFeatured: Boolean?
 )

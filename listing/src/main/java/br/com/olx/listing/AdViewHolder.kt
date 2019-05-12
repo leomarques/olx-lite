@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import br.com.olx.android.FontProvider
 import br.com.olx.android.imageloader.ImageLoader
@@ -26,6 +27,7 @@ class AdViewHolder(view: View, private val context: Context, private val imageLo
     private var placeholder: Drawable? = null
     private var errorPlaceholder: Drawable? = null
     private var arrowDown: ImageView = view.findViewById(R.id.arrow_down)
+    private var featured: ConstraintLayout = view.findViewById(R.id.featured)
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -52,7 +54,12 @@ class AdViewHolder(view: View, private val context: Context, private val imageLo
 
             if (ad.thumbUrl.isNotEmpty()) {
                 imageLoader.loadImage(context, ad.thumbUrl, thumbnail, placeholder, errorPlaceholder)
-            }
+                if (ad.isFeatured)
+                    featured.visibility = View.VISIBLE
+                else
+                    featured.visibility = View.GONE
+            } else
+                featured.visibility = View.GONE
         }
     }
 

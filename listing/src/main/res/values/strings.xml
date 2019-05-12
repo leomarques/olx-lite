@@ -3,4 +3,5 @@
     <string name="listitem_title_placeholder">Título do anúncio Lorem ipsum dolor sit amet, consectetur adipiscing elit</string>
     <string name="listitem_price_placeholder">R$123</string>
     <string name="listitem_metainfo_placeholder">1 de abril 14:24, Rio de Janeiro Lorem ipsum dolor sit amet, consectetur adipiscing elit</string>
+    <string name="listitem_featured_text">DESTAQUE</string>
 </resources>

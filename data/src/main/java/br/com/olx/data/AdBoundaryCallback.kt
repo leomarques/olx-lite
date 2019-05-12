@@ -67,7 +67,8 @@ class AdBoundaryCallback(
                 adRemote.price ?: "",
                 adRemote.time?.toString() ?: "",
                 adRemote.location?.neighbourhood ?: "",
-                adRemote.oldPrice ?: ""
+                adRemote.oldPrice ?: "",
+                adRemote.isFeatured ?: false
         )
     }
 }

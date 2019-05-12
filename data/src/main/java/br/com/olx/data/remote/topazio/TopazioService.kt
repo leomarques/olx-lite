@@ -57,6 +57,12 @@ class TopazioService : AdService {
     }
 
     private fun convertToAdRemote(it: Ads1): AdRemote {
+        var isFeatured = false
+        it.featured.forEach { item ->
+            if (item == "VISUAL_FEATURED")
+                isFeatured = true
+        }
+
         return AdRemote(
                 it.listId?.toString(),
                 it.subject,
@@ -64,7 +70,8 @@ class TopazioService : AdService {
                 it.priceValue,
                 it.location,
                 it.thumbnail,
-                it.oldPrice
+                it.oldPrice,
+                isFeatured
         )
     }
 
