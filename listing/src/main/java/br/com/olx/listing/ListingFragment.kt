@@ -1,16 +1,16 @@
 package br.com.olx.listing
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.olx.android.MainActivity
 import br.com.olx.android.imageloader.GlideImageLoader
 import br.com.olx.data.Injection
 import br.com.olx.data.local.AdRoom
@@ -20,6 +20,12 @@ import kotlinx.android.synthetic.main.listing_fragment.*
 class ListingFragment : Fragment() {
     private var lastRefreshTime = 0L
     private val refreshCooldownMiliseconds = 5000L
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -73,14 +79,39 @@ class ListingFragment : Fragment() {
         viewModel.searchAds()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        menu.clear()
+        inflater?.inflate(R.menu.options_menu, menu)
+
+        val context = ((context as MainActivity).supportActionBar?.themedContext ?: context)
+        val searchView = SearchView(context)
+        searchView.queryHint = "Pesquisar"
+
+        menu.findItem(R.id.search).apply {
+            setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
+            actionView = searchView
+        }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(keyword: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
+        searchView.setOnClickListener { view -> }
+    }
+
     private fun shouldRefresh(): Boolean {
         val currentTime = System.currentTimeMillis()
         if (currentTime - lastRefreshTime > refreshCooldownMiliseconds) {
-            ologx("will refresh, lastRefreshTime = $lastRefreshTime, currentTime = $currentTime")
             lastRefreshTime = currentTime
             return true
         }
-        ologx("will NOT refresh, lastRefreshTime = $lastRefreshTime, currentTime = $currentTime")
 
         return false
     }
