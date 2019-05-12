@@ -9,7 +9,12 @@ class ListingRepository(
         private val cache: LocalCache
 ) : Repository {
 
-    override fun search(): AdSearchResult {
+    override fun search(isRefresh: Boolean): AdSearchResult {
+        if (isRefresh) {
+            service.clearPage()
+            cache.clear()
+        }
+
         val dataSourceFactory = cache.allAds()
 
         // Construct the boundary callback

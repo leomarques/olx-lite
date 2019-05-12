@@ -6,4 +6,6 @@ interface AdService {
             onError: (error: String) -> Unit,
             retry: Int
     )
+
+    fun clearPage()
 }

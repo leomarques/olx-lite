@@ -68,6 +68,11 @@ class TopazioService : AdService {
         )
     }
 
+    override fun clearPage() {
+        page = null
+        pageCount = 0
+    }
+
     private val mediaType = MediaType.get("application/json")
     private val client: OkHttpClient = OkHttpClient()
 

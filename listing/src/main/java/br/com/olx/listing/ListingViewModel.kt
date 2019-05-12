@@ -13,15 +13,15 @@ class ListingViewModel(private val repository: Repository) : ViewModel() {
 
     private val queryLiveData = MutableLiveData<String>()
 
-    private val adResult: LiveData<AdSearchResult> = Transformations.map(queryLiveData) {
-        repository.search()
+    private val adSearchResult: LiveData<AdSearchResult> = Transformations.map(queryLiveData) {
+        repository.search(it == "refresh")
     }
 
-    val ads: LiveData<PagedList<AdRoom>> = Transformations.switchMap(adResult) {
+    val ads: LiveData<PagedList<AdRoom>> = Transformations.switchMap(adSearchResult) {
         it.data
     }
 
-    val networkErrors: LiveData<String> = Transformations.switchMap(adResult) { it.networkErrors }
+    val networkErrors: LiveData<String> = Transformations.switchMap(adSearchResult) { it.networkErrors }
 
     fun searchAds() {
         queryLiveData.postValue("search")
