@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
-import br.com.olx.data.local.AdRoom
 import br.com.olx.data.AdSearchResult
 import br.com.olx.data.Repository
+import br.com.olx.data.local.AdRoom
 
 class ListingViewModel(private val repository: Repository) : ViewModel() {
 
@@ -24,6 +24,10 @@ class ListingViewModel(private val repository: Repository) : ViewModel() {
     val networkErrors: LiveData<String> = Transformations.switchMap(adResult) { it.networkErrors }
 
     fun searchAds() {
-        queryLiveData.postValue("")
+        queryLiveData.postValue("search")
+    }
+
+    fun refreshAds() {
+        queryLiveData.postValue("refresh")
     }
 }
