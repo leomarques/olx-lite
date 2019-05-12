@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.listing_fragment.*
 
 class ListingFragment : Fragment() {
     private var lastRefreshTime = 0L
-    private val refreshCooldownMiliseconds = 4000L
+    private val refreshCooldownMiliseconds = 5000L
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -47,6 +47,7 @@ class ListingFragment : Fragment() {
                 ologx("${it.size}")
                 showList(true)
                 showLoading(false)
+                pull_to_refresh.isRefreshing = false
 
                 adapter.submitList(it)
             }
@@ -59,7 +60,8 @@ class ListingFragment : Fragment() {
         pull_to_refresh.setOnRefreshListener {
             if (shouldRefresh())
                 viewModel.refreshAds()
-            pull_to_refresh.isRefreshing = false
+            else
+                pull_to_refresh.isRefreshing = false
         }
 
         viewModel.networkErrors.observe(this, Observer {
