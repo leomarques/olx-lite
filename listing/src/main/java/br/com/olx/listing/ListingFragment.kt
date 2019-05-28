@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -12,14 +13,17 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.olx.android.MainActivity
 import br.com.olx.android.imageloader.GlideImageLoader
-import br.com.olx.data.Injection
+import br.com.olx.data.DataInjection
 import br.com.olx.data.local.AdRoom
 import br.com.olx.data.ologx
 import kotlinx.android.synthetic.main.listing_fragment.*
 
-class ListingFragment : Fragment() {
+class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
+
     private var lastRefreshTime = 0L
     private val refreshCooldownMiliseconds = 5000L
+
+    private lateinit var viewModel: ListingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +42,9 @@ class ListingFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val viewModel = ViewModelProviders.of(
+        viewModel = ViewModelProviders.of(
                 this,
-                ViewModelFactory(Injection.provideRepository(activity!!))
+                ViewModelFactory(DataInjection.provideRepository(activity!!))
         ).get(ListingViewModel::class.java)
 
         adList.layoutManager = LinearLayoutManager(context)
@@ -49,13 +53,18 @@ class ListingFragment : Fragment() {
         adList.adapter = adapter
 
         viewModel.ads.observe(this, Observer<PagedList<AdRoom>> {
+            ologx("${it.size}")
+            showLoading(false)
+            showIsRefreshing(false)
+
             if (it.size != 0) {
-                ologx("${it.size}")
                 showList(true)
-                showLoading(false)
-                pull_to_refresh.isRefreshing = false
+                showNoResult(false)
 
                 adapter.submitList(it)
+            } else {
+                showList(false)
+                showNoResult(true)
             }
         })
 
@@ -67,16 +76,20 @@ class ListingFragment : Fragment() {
             if (shouldRefresh())
                 viewModel.refreshAds()
             else
-                pull_to_refresh.isRefreshing = false
+                showIsRefreshing(false)
         }
 
         viewModel.networkErrors.observe(this, Observer {
-            val errorMsg = if (it.length >= 15) it.subSequence(0, 15) else it
-            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+            val errorMsg = if (it.length >= 45) it.subSequence(0, 45) else it
+            Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show()
+
             showLoading(false)
+            showIsRefreshing(false)
+            showList(true)
+            showNoResult(false)
         })
 
-        viewModel.searchAds()
+        viewModel.searchAds("")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
@@ -87,24 +100,42 @@ class ListingFragment : Fragment() {
 
         val context = ((context as MainActivity).supportActionBar?.themedContext ?: context)
         val searchView = SearchView(context)
-        searchView.queryHint = "Pesquisar"
+        searchView.queryHint = getString(R.string.kwsearch_hint)
 
-        menu.findItem(R.id.search).apply {
+        val menuItem = menu.findItem(R.id.search)
+        menuItem.apply {
             setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
             actionView = searchView
         }
 
+        // When using the support library, the setOnActionExpandListener() method is
+        // static and accepts the MenuItem object as an argument
+        MenuItemCompat.setOnActionExpandListener(menuItem, this)
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(keyword: String): Boolean {
+                viewModel.searchAds(keyword)
+                showList(false)
+                showLoading(true)
+
                 return false
             }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                return false
-            }
+            override fun onQueryTextChange(newText: String) = false
         })
-        searchView.setOnClickListener { view -> }
     }
+
+    override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+        showList(false)
+        showLoading(true)
+        showNoResult(false)
+        showIsRefreshing(false)
+        viewModel.searchAds("")
+
+        return true
+    }
+
+    override fun onMenuItemActionExpand(item: MenuItem?) = true
 
     private fun shouldRefresh(): Boolean {
         val currentTime = System.currentTimeMillis()
@@ -122,5 +153,13 @@ class ListingFragment : Fragment() {
 
     private fun showLoading(show: Boolean) {
         progressBar.visibility = if (show) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun showNoResult(show: Boolean) {
+        no_result.visibility = if (show) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun showIsRefreshing(show: Boolean) {
+        pull_to_refresh.isRefreshing = show
     }
 }

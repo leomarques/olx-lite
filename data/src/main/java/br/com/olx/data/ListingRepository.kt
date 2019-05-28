@@ -9,16 +9,13 @@ class ListingRepository(
         private val cache: LocalCache
 ) : Repository {
 
-    override fun search(isRefresh: Boolean): AdSearchResult {
-        if (isRefresh) {
-            service.clearPage()
-            cache.clear()
-        }
-
+    override fun search(keyword: String): AdSearchResult {
+        cache.clear()
         val dataSourceFactory = cache.allAds()
 
         // Construct the boundary callback
-        val boundaryCallback = AdBoundaryCallback(service, cache)
+        service.clearPage()
+        val boundaryCallback = AdBoundaryCallback(service, cache, keyword)
         val networkErrors = boundaryCallback.networkErrors
 
         // Get the paged list

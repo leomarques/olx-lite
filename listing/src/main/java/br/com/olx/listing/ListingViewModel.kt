@@ -11,10 +11,10 @@ import br.com.olx.data.local.AdRoom
 
 class ListingViewModel(private val repository: Repository) : ViewModel() {
 
-    private val queryLiveData = MutableLiveData<String>()
+    private val keywordLiveData = MutableLiveData<String>()
 
-    private val adSearchResult: LiveData<AdSearchResult> = Transformations.map(queryLiveData) {
-        repository.search(it == "refresh")
+    private val adSearchResult: LiveData<AdSearchResult> = Transformations.map(keywordLiveData) {
+        repository.search(it)
     }
 
     val ads: LiveData<PagedList<AdRoom>> = Transformations.switchMap(adSearchResult) {
@@ -23,11 +23,12 @@ class ListingViewModel(private val repository: Repository) : ViewModel() {
 
     val networkErrors: LiveData<String> = Transformations.switchMap(adSearchResult) { it.networkErrors }
 
-    fun searchAds() {
-        queryLiveData.postValue("search")
+    fun searchAds(keyword: String) {
+        keywordLiveData.postValue(keyword)
     }
 
     fun refreshAds() {
-        queryLiveData.postValue("refresh")
+        val keyword = keywordLiveData.value ?: ""
+        keywordLiveData.postValue(keyword)
     }
 }

@@ -7,7 +7,7 @@ import br.com.olx.data.remote.AdService
 import br.com.olx.data.remote.topazio.TopazioService
 import java.util.concurrent.Executors
 
-object Injection {
+object DataInjection {
     private fun provideCache(context: Context): LocalCache {
         val database = AdRoomDatabase.getInstance(context)
         val localCache = LocalCache(database.adsDao(), Executors.newSingleThreadExecutor())

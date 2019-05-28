@@ -2,7 +2,8 @@ package br.com.olx.data.remote
 
 interface AdService {
     fun searchAds(
-            onSuccess: (ads: List<AdRemote>) -> Unit,
+            keyword: String,
+            onSuccess: (ads: List<AdRemote>, hasNextPage: Boolean) -> Unit,
             onError: (error: String) -> Unit,
             retry: Int
     )

@@ -18,16 +18,20 @@ class TopazioService : AdService {
     private var page: String? = null
     private var pageCount = 0
 
-    override fun searchAds(onSuccess: (ads: List<AdRemote>) -> Unit, onError: (error: String) -> Unit, retry: Int) {
-        page = if (page == null) {
-            ""
-        } else {
-            "o=$page"
+    override fun searchAds(keyword: String, onSuccess: (ads: List<AdRemote>, hasNextPage: Boolean) -> Unit, onError: (error: String) -> Unit, retry: Int) {
+        var queryParams = "lim=25"
+
+        if (page != null && page?.isNotEmpty() == true) {
+            queryParams += "&o=$page"
         }
 
-        val query = "{\"query\":\"query getAdsFromQueryString(\$queryString: String!) {    ads(queryString: \$queryString) {      pagination      ads {        listId        rankId        lastBumpAgeSecs        isFavorited        subject        origListTime        priceValue        oldPrice        professionalAd        featured        location {          neighbourhood          municipality          uf        }        images {          baseUrl          path        }        properties {          name          value        }        thumbnail {          baseUrl          path        }        user {          name          accountId        }        phone {          phone          phoneHidden          phoneVerified        }        adReply      }    }  }  \",\"variables\":{\"queryString\":\"$page&lim=25\"},\"operationName\":\"getAdsFromQueryString\"}"
+        if (keyword.isNotEmpty()) {
+            queryParams += "&q=$keyword"
+        }
 
-        ologx("searchAds $page - count: ${pageCount++}, retry: $retry")
+        val query = "{\"query\":\"query getAdsFromQueryString(\$queryString: String!) {    ads(queryString: \$queryString) {      pagination      ads {        listId        rankId        lastBumpAgeSecs        isFavorited        subject        origListTime        priceValue        oldPrice        professionalAd        featured        location {          neighbourhood          municipality          uf        }        images {          baseUrl          path        }        properties {          name          value        }        thumbnail {          baseUrl          path        }        user {          name          accountId        }        phone {          phone          phoneHidden          phoneVerified        }        adReply      }    }  }  \",\"variables\":{\"queryString\":\"$queryParams\"},\"operationName\":\"getAdsFromQueryString\"}"
+
+        ologx("searchAds nextPage: $page, count: ${pageCount++}, retry: $retry, kw: $keyword")
 
         post(endpointUrl, query, { response ->
             try {
@@ -38,17 +42,19 @@ class TopazioService : AdService {
                 val adRemoteList = jsonResponse.data.ads.ads.map {
                     convertToAdRemote(it)
                 }
-                onSuccess(adRemoteList)
+
+                onSuccess(adRemoteList, page?.isNotEmpty() == true)
 
             } catch (e: Exception) {
                 ologx("Response parse exception")
                 onError("Error parsing response")
             }
         }, { error ->
+            ologx("error retry $retry")
             if (retry < 3) {
                 GlobalScope.launch {
                     delay(2000)
-                    searchAds(onSuccess, onError, retry + 1)
+                    searchAds(keyword, onSuccess, onError, retry + 1)
                 }
             } else {
                 onError(error)

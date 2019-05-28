@@ -12,9 +12,11 @@ import kotlinx.coroutines.launch
 
 class AdBoundaryCallback(
         private val service: AdService,
-        private val cache: LocalCache
+        private val cache: LocalCache,
+        private val keyword: String
 ) : PagedList.BoundaryCallback<AdRoom>() {
 
+    private var hasNextPage = true
     private val _networkErrors = MutableLiveData<String>()
     // LiveData of network errors.
     val networkErrors: LiveData<String>
@@ -24,21 +26,30 @@ class AdBoundaryCallback(
     private var isRequestInProgress = false
 
     override fun onZeroItemsLoaded() {
+        ologx("onZeroItemsLoaded")
         requestAndSaveData()
     }
 
     override fun onItemAtEndLoaded(itemAtEnd: AdRoom) {
-        requestAndSaveData()
+        ologx("onItemAtEndLoaded")
+
+        if (hasNextPage)
+            requestAndSaveData()
     }
 
     private fun requestAndSaveData() {
-        if (isRequestInProgress) return
+        if (isRequestInProgress) {
+            ologx("isRequestInProgress")
+            return
+        }
 
         isRequestInProgress = true
 
         GlobalScope.launch {
             service.searchAds(
-                    { ads ->
+                    keyword,
+                    { ads: List<AdRemote>, hasNextPageParam: Boolean ->
+                        hasNextPage = hasNextPageParam
                         ads.map { adRemote ->
                             convertAdRemoteToAdRoom(adRemote)
                         }.also {
