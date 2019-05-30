@@ -1,7 +1,10 @@
 package br.com.olx.listing
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
@@ -132,6 +135,9 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
                 showLoading(true)
                 showList(false)
 
+                searchView.clearFocus()
+                hideKeyboard(context, view)
+
                 searchAds(keyword)
 
                 return true
@@ -139,6 +145,14 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
 
             override fun onQueryTextChange(newText: String) = false
         })
+    }
+
+    fun hideKeyboard(context: Context?, view: View?) {
+        if (context == null || view == null)
+            return
+
+        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
