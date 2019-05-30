@@ -17,6 +17,7 @@ class ListingRepository(
         service.clearPage()
         val boundaryCallback = AdBoundaryCallback(service, cache, keyword)
         val networkErrors = boundaryCallback.networkErrors
+        val responseSize = boundaryCallback.responseSize
 
         // Get the paged list
         val data = LivePagedListBuilder(
@@ -27,7 +28,7 @@ class ListingRepository(
                 .build()
 
         // Get the network errors exposed by the boundary callback
-        return AdSearchResult(data, networkErrors)
+        return AdSearchResult(data, networkErrors, responseSize)
     }
 
     companion object {

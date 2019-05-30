@@ -22,6 +22,7 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
 
     private var lastRefreshTime = 0L
     private val refreshCooldownMiliseconds = 5000L
+    private var preparingNewSearch = false
 
     private lateinit var viewModel: ListingViewModel
 
@@ -53,19 +54,27 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
         adList.adapter = adapter
 
         viewModel.ads.observe(this, Observer<PagedList<AdRoom>> {
-            ologx("${it.size}")
+            ologx("ads.observe ${it.size}")
+
+            adapter.submitList(it)
+
+            showContent(it.isNotEmpty())
+        })
+
+        viewModel.responseSize.observe(this, Observer<Int> {
+            preparingNewSearch = false
+
+            showContent(it > 0)
+        })
+
+        viewModel.networkErrors.observe(this, Observer {
+            val errorMsg = if (it.length >= 45) it.subSequence(0, 45) else it
+            Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show()
+
             showLoading(false)
             showIsRefreshing(false)
-
-            if (it.size != 0) {
-                showList(true)
-                showNoResult(false)
-
-                adapter.submitList(it)
-            } else {
-                showList(false)
-                showNoResult(true)
-            }
+            showNoResult(false)
+            showList(true)
         })
 
         val color = ContextCompat.getColor(context!!, br.com.olx.android.R.color.primary_orange)
@@ -74,22 +83,28 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
         pull_to_refresh.setColorSchemeColors(color, color2, color3)
         pull_to_refresh.setOnRefreshListener {
             if (shouldRefresh())
-                viewModel.refreshAds()
+                refreshAds()
             else
                 showIsRefreshing(false)
         }
 
-        viewModel.networkErrors.observe(this, Observer {
-            val errorMsg = if (it.length >= 45) it.subSequence(0, 45) else it
-            Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show()
+        searchAds("")
+    }
 
-            showLoading(false)
-            showIsRefreshing(false)
-            showList(true)
-            showNoResult(false)
-        })
-
-        viewModel.searchAds("")
+    private fun showContent(isListNotEmpty: Boolean) {
+        if (!preparingNewSearch) {
+            if (isListNotEmpty) {
+                showLoading(false)
+                showIsRefreshing(false)
+                showNoResult(false)
+                showList(true)
+            } else {
+                showLoading(false)
+                showIsRefreshing(false)
+                showNoResult(true)
+                showList(false)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
@@ -114,11 +129,12 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(keyword: String): Boolean {
-                viewModel.searchAds(keyword)
-                showList(false)
                 showLoading(true)
+                showList(false)
 
-                return false
+                searchAds(keyword)
+
+                return true
             }
 
             override fun onQueryTextChange(newText: String) = false
@@ -126,11 +142,12 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
     }
 
     override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-        showList(false)
         showLoading(true)
-        showNoResult(false)
         showIsRefreshing(false)
-        viewModel.searchAds("")
+        showNoResult(false)
+        showList(false)
+
+        searchAds("")
 
         return true
     }
@@ -145,6 +162,16 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
         }
 
         return false
+    }
+
+    private fun searchAds(keyWord: String) {
+        preparingNewSearch = true
+        viewModel.searchAds(keyWord)
+    }
+
+    private fun refreshAds() {
+        preparingNewSearch = true
+        viewModel.refreshAds()
     }
 
     private fun showList(show: Boolean) {

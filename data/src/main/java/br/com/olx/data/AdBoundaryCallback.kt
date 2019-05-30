@@ -22,6 +22,10 @@ class AdBoundaryCallback(
     val networkErrors: LiveData<String>
         get() = _networkErrors
 
+    private val _responseSize = MutableLiveData<Int>()
+    val responseSize: LiveData<Int>
+        get() = _responseSize
+
     // avoid triggering multiple requests in the same time
     private var isRequestInProgress = false
 
@@ -55,12 +59,14 @@ class AdBoundaryCallback(
                         }.also {
                             cache.insert(it) {
                                 isRequestInProgress = false
+                                _responseSize.postValue(it.size)
                             }
                         }
                     },
                     { error ->
-                        _networkErrors.postValue(error)
                         isRequestInProgress = false
+                        _responseSize.postValue(-1)
+                        _networkErrors.postValue(error)
                     }, 0
             )
         }

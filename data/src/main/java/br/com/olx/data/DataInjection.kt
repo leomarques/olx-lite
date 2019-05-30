@@ -10,11 +10,7 @@ import java.util.concurrent.Executors
 object DataInjection {
     private fun provideCache(context: Context): LocalCache {
         val database = AdRoomDatabase.getInstance(context)
-        val localCache = LocalCache(database.adsDao(), Executors.newSingleThreadExecutor())
-
-        localCache.clear()
-
-        return localCache
+        return LocalCache(database.adsDao(), Executors.newSingleThreadExecutor())
     }
 
     fun provideRepository(context: Context): Repository {

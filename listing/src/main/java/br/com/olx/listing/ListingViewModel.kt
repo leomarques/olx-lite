@@ -21,6 +21,10 @@ class ListingViewModel(private val repository: Repository) : ViewModel() {
         it.data
     }
 
+    val responseSize: LiveData<Int> = Transformations.switchMap(adSearchResult) {
+        it.responseSize
+    }
+
     val networkErrors: LiveData<String> = Transformations.switchMap(adSearchResult) { it.networkErrors }
 
     fun searchAds(keyword: String) {
