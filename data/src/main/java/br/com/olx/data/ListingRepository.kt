@@ -13,7 +13,6 @@ class ListingRepository(
         cache.clear()
         val dataSourceFactory = cache.allAds()
 
-        // Construct the boundary callback
         service.clearPage()
         val boundaryCallback = AdBoundaryCallback(service, cache, keyword)
         val networkErrors = boundaryCallback.networkErrors
@@ -27,7 +26,6 @@ class ListingRepository(
                 .setBoundaryCallback(boundaryCallback)
                 .build()
 
-        // Get the network errors exposed by the boundary callback
         return AdSearchResult(data, networkErrors, responseSize)
     }
 

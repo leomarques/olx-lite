@@ -7,7 +7,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 class GlideImageLoader : ImageLoader {
-
     override fun loadImage(
             context: Context,
             url: String,

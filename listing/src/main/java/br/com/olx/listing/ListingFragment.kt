@@ -211,7 +211,6 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
 
             val keyWord = viewModel.keywordLiveData.value
             no_result_title.text = getString(R.string.no_result_title, keyWord)
-
         }
 
         no_result.visibility = if (show) View.VISIBLE else View.INVISIBLE
