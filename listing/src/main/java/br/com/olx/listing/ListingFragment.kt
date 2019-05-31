@@ -135,6 +135,8 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(keyword: String): Boolean {
                 showLoading(true)
+                showIsRefreshing(false)
+                showNoResult(false)
                 showList(false)
 
                 searchView.clearFocus()
