@@ -93,7 +93,7 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
                 showIsRefreshing(false)
         }
 
-        searchAds("w22d2ce32ce2")
+        searchAds("")
     }
 
     private fun showContent(isListNotEmpty: Boolean) {
