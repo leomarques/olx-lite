@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.olx.android.FontProvider
 import br.com.olx.android.MainActivity
 import br.com.olx.android.imageloader.GlideImageLoader
 import br.com.olx.data.DataInjection
@@ -23,10 +24,11 @@ import kotlinx.android.synthetic.main.listing_fragment.*
 
 class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
 
+    private var noResultLoaded = false
     private var lastRefreshTime = 0L
     private val refreshCooldownMiliseconds = 5000L
     private var preparingNewSearch = false
-
+    private val imageLoader = GlideImageLoader()
     private lateinit var viewModel: ListingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +55,7 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
 
         adList.layoutManager = LinearLayoutManager(context)
 
-        val adapter = AdsAdapter(GlideImageLoader())
+        val adapter = AdsAdapter(imageLoader)
         adList.adapter = adapter
 
         viewModel.ads.observe(this, Observer<PagedList<AdRoom>> {
@@ -91,7 +93,7 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
                 showIsRefreshing(false)
         }
 
-        searchAds("")
+        searchAds("w22d2ce32ce2")
     }
 
     private fun showContent(isListNotEmpty: Boolean) {
@@ -197,6 +199,21 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
     }
 
     private fun showNoResult(show: Boolean) {
+        if (show) {
+            if (!noResultLoaded) {
+                val url = "https://s3.amazonaws.com/static.olx.com.br/cd/android/img_noresult.png"
+                imageLoader.loadImage(context!!, url, no_result_image, null, null)
+                no_result_title.typeface = FontProvider.getNunitoSansRegularTypeFace(context!!)
+                no_result_description.typeface = FontProvider.getNunitoSansBoldTypeFace(context!!)
+
+                noResultLoaded = true
+            }
+
+            val keyWord = viewModel.keywordLiveData.value
+            no_result_title.text = getString(R.string.no_result_title, keyWord)
+
+        }
+
         no_result.visibility = if (show) View.VISIBLE else View.INVISIBLE
     }
 

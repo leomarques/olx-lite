@@ -5,4 +5,6 @@
     <string name="listitem_metainfo_placeholder">1 de abril 14:24, Rio de Janeiro Lorem ipsum dolor sit amet, consectetur adipiscing elit</string>
     <string name="listitem_featured_text">DESTAQUE</string>
     <string name="kwsearch_hint">Pesquisar</string>
+    <string name="no_result_title">Nenhum anúncio encontrado para \"%1$s\"</string>
+    <string name="no_result_description">Faça uma nova busca ou veja as nossas sugestões para você :)</string>
 </resources>

@@ -11,7 +11,7 @@ import br.com.olx.data.local.AdRoom
 
 class ListingViewModel(private val repository: Repository) : ViewModel() {
 
-    private val keywordLiveData = MutableLiveData<String>()
+    val keywordLiveData = MutableLiveData<String>()
 
     private val adSearchResult: LiveData<AdSearchResult> = Transformations.map(keywordLiveData) {
         repository.search(it)
