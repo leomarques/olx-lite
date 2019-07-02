@@ -14,7 +14,7 @@ import okhttp3.RequestBody
 
 class TopazioService : AdService {
 
-    private val endpointUrl = "http://advil-router.us-east-1.elasticbeanstalk.com/"
+    private val endpointUrl = "https://topazio.olx.com.br/"
     private var page: String? = null
     private var pageCount = 0
 
