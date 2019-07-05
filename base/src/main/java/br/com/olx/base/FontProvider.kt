@@ -1,4 +1,4 @@
-package br.com.olx.listing
+package br.com.olx.base
 
 import android.content.Context
 import androidx.core.content.res.ResourcesCompat

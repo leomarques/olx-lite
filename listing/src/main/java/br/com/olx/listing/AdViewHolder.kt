@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import br.com.olx.base.FontProvider
 import br.com.olx.base.imageloader.ImageLoader
 import br.com.olx.data.local.AdRoom
 import java.sql.Timestamp

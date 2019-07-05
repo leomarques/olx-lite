@@ -1,6 +1,6 @@
 apply from: "$rootDir/apply-android-lib.gradle"
 
 dependencies {
-    annotationProcessor libraries.glidecompiler
+    kapt libraries.glidecompiler
     implementation libraries.glide
 }

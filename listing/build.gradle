@@ -9,4 +9,6 @@ dependencies {
     implementation libraries.constraintlayout
     implementation libraries.cardview
     implementation libraries.paging
+    implementation libraries.room
+    kapt libraries.roomcompiler
 }

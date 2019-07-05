@@ -1,6 +1,5 @@
 package br.com.olx.data.remote.topazio
 
-import br.com.olx.data.ologx
 import br.com.olx.data.remote.AdRemote
 import br.com.olx.data.remote.AdService
 import com.google.gson.Gson
@@ -31,7 +30,7 @@ class TopazioService : AdService {
 
         val query = "{\"query\":\"query getAdsFromQueryString(\$queryString: String!) {    ads(queryString: \$queryString) {      pagination      ads {        listId        rankId        lastBumpAgeSecs        isFavorited        subject        origListTime        priceValue        oldPrice        professionalAd        featured        location {          neighbourhood          municipality          uf        }        images {          baseUrl          path        }        properties {          name          value        }        thumbnail {          baseUrl          path        }        user {          name          accountId        }        phone {          phone          phoneHidden          phoneVerified        }        adReply      }    }  }  \",\"variables\":{\"queryString\":\"$queryParams\"},\"operationName\":\"getAdsFromQueryString\"}"
 
-        ologx("searchAds nextPage: $page, count: ${pageCount++}, retry: $retry, kw: $keyword")
+        br.com.olx.base.ologx("searchAds nextPage: $page, count: ${pageCount++}, retry: $retry, kw: $keyword")
 
         post(endpointUrl, query, { response ->
             try {
@@ -46,11 +45,11 @@ class TopazioService : AdService {
                 onSuccess(adRemoteList, page?.isNotEmpty() == true)
 
             } catch (e: Exception) {
-                ologx("Response parse exception")
+                br.com.olx.base.ologx("Response parse exception")
                 onError("Error parsing response")
             }
         }, { error ->
-            ologx("error retry $retry")
+            br.com.olx.base.ologx("error retry $retry")
             if (retry < 3) {
                 GlobalScope.launch {
                     delay(2000)
@@ -114,7 +113,7 @@ class TopazioService : AdService {
                 onSuccess(responseString)
             }
         } catch (e: Exception) {
-            ologx("Request error exception")
+            br.com.olx.base.ologx("Request error exception")
             onError("Request failed")
         }
     }

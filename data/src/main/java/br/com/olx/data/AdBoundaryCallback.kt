@@ -3,6 +3,7 @@ package br.com.olx.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
+import br.com.olx.base.ologx
 import br.com.olx.data.local.AdRoom
 import br.com.olx.data.local.LocalCache
 import br.com.olx.data.remote.AdRemote
