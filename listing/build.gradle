@@ -1,7 +1,8 @@
-apply from: "$rootDir/apply-dynamic-feature.gradle"
+apply from: "$rootDir/apply-android-lib.gradle"
 
 dependencies {
     implementation project(':data')
+    implementation project(':base')
 
     implementation libraries.appcompat
     implementation libraries.lifecycle

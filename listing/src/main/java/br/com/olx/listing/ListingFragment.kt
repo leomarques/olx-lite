@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuItemCompat
@@ -14,9 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.olx.android.FontProvider
-import br.com.olx.android.MainActivity
-import br.com.olx.android.imageloader.GlideImageLoader
+import br.com.olx.base.imageloader.GlideImageLoader
 import br.com.olx.data.DataInjection
 import br.com.olx.data.local.AdRoom
 import br.com.olx.data.ologx
@@ -82,9 +81,9 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
             showList(true)
         })
 
-        val color = ContextCompat.getColor(context!!, br.com.olx.android.R.color.primary_orange)
-        val color2 = ContextCompat.getColor(context!!, br.com.olx.android.R.color.primary_purple)
-        val color3 = ContextCompat.getColor(context!!, br.com.olx.android.R.color.primary_green)
+        val color = ContextCompat.getColor(context!!, R.color.primary_orange)
+        val color2 = ContextCompat.getColor(context!!, R.color.primary_purple)
+        val color3 = ContextCompat.getColor(context!!, R.color.primary_green)
         pull_to_refresh.setColorSchemeColors(color, color2, color3)
         pull_to_refresh.setOnRefreshListener {
             if (shouldRefresh())
@@ -118,7 +117,7 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
         menu.clear()
         inflater?.inflate(R.menu.options_menu, menu)
 
-        val context = ((context as MainActivity).supportActionBar?.themedContext ?: context)
+        val context = ((context as AppCompatActivity).supportActionBar?.themedContext ?: context)
         val searchView = SearchView(context)
         searchView.queryHint = getString(R.string.kwsearch_hint)
 

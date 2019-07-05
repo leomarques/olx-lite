@@ -1,4 +1,4 @@
-package br.com.olx.android.imageloader
+package br.com.olx.base.imageloader
 
 import android.content.Context
 import android.graphics.drawable.Drawable

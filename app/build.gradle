@@ -22,13 +22,13 @@ android {
         debug {}
     }
 
-    dynamicFeatures = [":listing"]
 }
 
 dependencies {
+    implementation project(':listing')
+
     implementation libraries.kotlin
     implementation libraries.appcompat
     implementation libraries.navigation
-    annotationProcessor libraries.glidecompiler
-    implementation libraries.glide
+    implementation libraries.lifecycle
 }

@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import br.com.olx.android.imageloader.ImageLoader
+import br.com.olx.base.imageloader.ImageLoader
 import br.com.olx.data.local.AdRoom
 
 class AdsAdapter(private val imageLoader: ImageLoader) : PagedListAdapter<AdRoom, RecyclerView.ViewHolder>(AD_COMPARATOR) {
