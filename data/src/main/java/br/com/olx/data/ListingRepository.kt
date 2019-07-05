@@ -1,6 +1,7 @@
 package br.com.olx.data
 
 import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import br.com.olx.data.local.LocalCache
 import br.com.olx.data.remote.AdService
 
@@ -18,18 +19,19 @@ class ListingRepository(
         val networkErrors = boundaryCallback.networkErrors
         val responseSize = boundaryCallback.responseSize
 
+        val config: PagedList.Config = PagedList.Config.Builder()
+                .setPrefetchDistance(15)
+                .setPageSize(25)
+                .build()
+
         // Get the paged list
         val data = LivePagedListBuilder(
                 dataSourceFactory,
-                DATABASE_PAGE_SIZE
+                config
         )
                 .setBoundaryCallback(boundaryCallback)
                 .build()
 
         return AdSearchResult(data, networkErrors, responseSize)
-    }
-
-    companion object {
-        private const val DATABASE_PAGE_SIZE = 25
     }
 }
