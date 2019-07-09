@@ -1,8 +1,8 @@
 apply from: "$rootDir/apply-android-lib.gradle"
 
 dependencies {
+    implementation project(':common')
     implementation project(':data')
-    implementation project(':base')
 
     implementation libraries.appcompat
     implementation libraries.lifecycle

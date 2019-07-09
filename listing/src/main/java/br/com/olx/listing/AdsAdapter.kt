@@ -4,10 +4,11 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import br.com.olx.base.imageloader.ImageLoader
+import br.com.olx.common.imageloader.ImageLoader
 import br.com.olx.data.local.AdRoom
 
-class AdsAdapter(private val imageLoader: ImageLoader) : PagedListAdapter<AdRoom, RecyclerView.ViewHolder>(AD_COMPARATOR) {
+class AdsAdapter(private val imageLoader: ImageLoader)
+    : PagedListAdapter<AdRoom, RecyclerView.ViewHolder>(AD_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return AdViewHolder.create(parent, imageLoader)
@@ -26,7 +27,7 @@ class AdsAdapter(private val imageLoader: ImageLoader) : PagedListAdapter<AdRoom
                 oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: AdRoom, newItem: AdRoom): Boolean =
-                oldItem == newItem
+                oldItem.id == newItem.id
         }
     }
 }

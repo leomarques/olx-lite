@@ -15,9 +15,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.olx.base.FontProvider
-import br.com.olx.base.imageloader.GlideImageLoader
-import br.com.olx.base.ologx
+import br.com.olx.common.FontProvider
+import br.com.olx.common.imageloader.GlideImageLoader
+import br.com.olx.common.ologx
 import br.com.olx.data.DataInjection
 import br.com.olx.data.local.AdRoom
 import kotlinx.android.synthetic.main.listing_fragment.*

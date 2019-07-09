@@ -1,7 +1,7 @@
 apply from: "$rootDir/apply-android-lib.gradle"
 
 dependencies {
-    implementation project(':base')
+    implementation project(':common')
 
     implementation libraries.coroutines
     implementation libraries.okhttp

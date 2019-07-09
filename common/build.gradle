@@ -3,4 +3,5 @@ apply from: "$rootDir/apply-android-lib.gradle"
 dependencies {
     kapt libraries.glidecompiler
     implementation libraries.glide
+    implementation libraries.navigation
 }

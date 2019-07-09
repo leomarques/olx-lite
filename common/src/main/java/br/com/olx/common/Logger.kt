@@ -1,4 +1,4 @@
-package br.com.olx.base
+package br.com.olx.common
 
 import android.util.Log
 

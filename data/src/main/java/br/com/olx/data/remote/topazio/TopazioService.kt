@@ -1,15 +1,12 @@
 package br.com.olx.data.remote.topazio
 
+import br.com.olx.common.ologx
 import br.com.olx.data.remote.AdRemote
 import br.com.olx.data.remote.AdService
 import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
 
 class TopazioService : AdService {
 
@@ -28,13 +25,13 @@ class TopazioService : AdService {
             queryParams += "&q=$keyword"
         }
 
-        val query = "{\"query\":\"query getAdsFromQueryString(\$queryString: String!) {    ads(queryString: \$queryString) {      pagination      ads {        listId        rankId        lastBumpAgeSecs        isFavorited        subject        origListTime        priceValue        oldPrice        professionalAd        featured        location {          neighbourhood          municipality          uf        }        images {          baseUrl          path        }        properties {          name          value        }        thumbnail {          baseUrl          path        }        user {          name          accountId        }        phone {          phone          phoneHidden          phoneVerified        }        adReply      }    }  }  \",\"variables\":{\"queryString\":\"$queryParams\"},\"operationName\":\"getAdsFromQueryString\"}"
+        val query = buildQueryString(queryParams)
 
-        br.com.olx.base.ologx("searchAds nextPage: $page, count: ${pageCount++}, retry: $retry, kw: $keyword")
+        ologx("Search Ads - nextPage: $page, pages: ${pageCount++}, retry: $retry, kw: $keyword")
 
         post(endpointUrl, query, { response ->
             try {
-                val jsonResponse = Gson().fromJson<TopazioResponse>(response, TopazioResponse::class.java)
+                val jsonResponse = Gson().fromJson(response, TopazioResponse::class.java)
 
                 page = jsonResponse.data.ads.pagination
 
@@ -45,11 +42,11 @@ class TopazioService : AdService {
                 onSuccess(adRemoteList, page?.isNotEmpty() == true)
 
             } catch (e: Exception) {
-                br.com.olx.base.ologx("Response parse exception")
-                onError("Error parsing response")
+                ologx("Response parse exception")
+                onError("Erro ao obter dados =(")
             }
         }, { error ->
-            br.com.olx.base.ologx("error retry $retry")
+            ologx("error retry $retry")
             if (retry < 3) {
                 GlobalScope.launch {
                     delay(2000)
@@ -61,60 +58,8 @@ class TopazioService : AdService {
         })
     }
 
-    private fun convertToAdRemote(it: Ads1): AdRemote {
-        var isFeatured = false
-        it.featured.forEach { item ->
-            if (item == "VISUAL_FEATURED")
-                isFeatured = true
-        }
-
-        return AdRemote(
-                it.listId?.toString(),
-                it.subject,
-                it.origListTime,
-                it.priceValue,
-                it.location,
-                it.thumbnail,
-                it.oldPrice,
-                isFeatured
-        )
-    }
-
     override fun clearPage() {
         page = null
         pageCount = 0
-    }
-
-    private val mediaType = MediaType.get("application/json")
-    private val client: OkHttpClient = OkHttpClient()
-
-    private fun post(
-            url: String,
-            json: String,
-            onSuccess: (response: String) -> Unit,
-            onError: (error: String) -> Unit
-    ) {
-        val body = RequestBody.create(mediaType, json)
-        val request = Request.Builder()
-                .url(url)
-                .post(body)
-                .build()
-
-        try {
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) {
-                    onError(response.message())
-                }
-
-                val responseBody = response.body() ?: return onError("Response body null")
-                val responseString = responseBody.string()
-                responseBody.close()
-
-                onSuccess(responseString)
-            }
-        } catch (e: Exception) {
-            br.com.olx.base.ologx("Request error exception")
-            onError("Request failed")
-        }
     }
 }

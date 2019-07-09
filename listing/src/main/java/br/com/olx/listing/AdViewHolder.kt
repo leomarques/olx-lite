@@ -11,12 +11,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import br.com.olx.base.FontProvider
-import br.com.olx.base.imageloader.ImageLoader
+import br.com.olx.common.FontProvider
+import br.com.olx.common.imageloader.ImageLoader
 import br.com.olx.data.local.AdRoom
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
-import java.util.*
 
 class AdViewHolder(view: View, private val context: Context, private val imageLoader: ImageLoader) : RecyclerView.ViewHolder(view) {
 
@@ -65,20 +62,6 @@ class AdViewHolder(view: View, private val context: Context, private val imageLo
 
     private fun shouldShowArrowDown(price: String, oldPrice: String) =
             oldPrice.isNotEmpty() && price.isNotEmpty() && price < oldPrice
-
-    private fun formatDate(date: String): String {
-        return try {
-            val dateLong = date.toLong()
-            val timeStamp = Timestamp(dateLong)
-            val stampTime = timeStamp.time
-            val stampDate = Date(stampTime)
-            val locale = Locale("pt", "BR")
-            val sdf = SimpleDateFormat("dd 'de' MMMM 'às' HH:mm", locale)
-            sdf.format(stampDate)
-        } catch (e: Exception) {
-            ""
-        }
-    }
 
     companion object {
         fun create(parent: ViewGroup, imageLoader: ImageLoader): AdViewHolder {
