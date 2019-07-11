@@ -1,7 +1,6 @@
 package br.com.olx.listing
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -31,12 +30,6 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
     private val imageLoader = GlideImageLoader()
     private lateinit var viewModel: ListingViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -47,6 +40,8 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        setHasOptionsMenu(true)
 
         viewModel = ViewModelProviders.of(
                 this,
@@ -59,7 +54,7 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
         adList.adapter = adapter
 
         viewModel.ads.observe(this, Observer<PagedList<AdRoom>> {
-            ologx("ads.observe ${it.size}")
+            ologx("Submitting ads list of size: ${it.size}")
 
             adapter.submitList(it)
 
@@ -73,8 +68,7 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
         })
 
         viewModel.networkErrors.observe(this, Observer {
-            val errorMsg = if (it.length >= 45) it.subSequence(0, 45) else it
-            Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
 
             showLoading(false)
             showIsRefreshing(false)
@@ -82,10 +76,7 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
             showList(true)
         })
 
-        val color = ContextCompat.getColor(context!!, R.color.primary_orange)
-        val color2 = ContextCompat.getColor(context!!, R.color.primary_purple)
-        val color3 = ContextCompat.getColor(context!!, R.color.primary_green)
-        pull_to_refresh.setColorSchemeColors(color, color2, color3)
+        setPullToRefreshColor()
         pull_to_refresh.setOnRefreshListener {
             if (shouldRefresh())
                 refreshAds()
@@ -94,6 +85,13 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
         }
 
         searchAds("")
+    }
+
+    private fun setPullToRefreshColor() {
+        val color = ContextCompat.getColor(context!!, R.color.primary_orange)
+        val color2 = ContextCompat.getColor(context!!, R.color.primary_purple)
+        val color3 = ContextCompat.getColor(context!!, R.color.primary_green)
+        pull_to_refresh.setColorSchemeColors(color, color2, color3)
     }
 
     private fun showContent(isListNotEmpty: Boolean) {
@@ -140,7 +138,7 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
                 showList(false)
 
                 searchView.clearFocus()
-                hideKeyboard(context, view)
+                hideKeyboard()
 
                 searchAds(keyword)
 
@@ -149,14 +147,6 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
 
             override fun onQueryTextChange(newText: String) = false
         })
-    }
-
-    fun hideKeyboard(context: Context?, view: View?) {
-        if (context == null || view == null)
-            return
-
-        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
@@ -171,6 +161,14 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
     }
 
     override fun onMenuItemActionExpand(item: MenuItem?) = true
+
+    private fun hideKeyboard() {
+        if (context == null || view == null)
+            return
+
+        val imm = context!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+    }
 
     private fun shouldRefresh(): Boolean {
         val currentTime = System.currentTimeMillis()
@@ -202,20 +200,25 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
 
     private fun showNoResult(show: Boolean) {
         if (show) {
-            if (!noResultLoaded) {
-                val url = "https://s3.amazonaws.com/static.olx.com.br/cd/android/img_noresult.png"
-                imageLoader.loadImage(context!!, url, no_result_image, null, null)
-                no_result_title.typeface = FontProvider.getNunitoSansRegularTypeFace(context!!)
-                no_result_description.typeface = FontProvider.getNunitoSansBoldTypeFace(context!!)
-
-                noResultLoaded = true
-            }
-
-            val keyWord = viewModel.keywordLiveData.value
-            no_result_title.text = getString(R.string.no_result_title, keyWord)
+            setupNoResult()
         }
 
         no_result.visibility = if (show) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun setupNoResult() {
+        if (!noResultLoaded) {
+            val url = "https://s3.amazonaws.com/static.olx.com.br/cd/android/img_noresult.png"
+            imageLoader.loadImage(context!!, url, no_result_image, null, null)
+
+            no_result_title.typeface = FontProvider.getNunitoSansRegularTypeFace(context!!)
+            no_result_description.typeface = FontProvider.getNunitoSansBoldTypeFace(context!!)
+
+            noResultLoaded = true
+        }
+
+        val keyWord = viewModel.keywordLiveData.value
+        no_result_title.text = getString(R.string.no_result_title, keyWord)
     }
 
     private fun showIsRefreshing(show: Boolean) {
