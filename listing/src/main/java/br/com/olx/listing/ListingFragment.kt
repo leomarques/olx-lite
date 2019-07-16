@@ -54,7 +54,7 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
         adList.adapter = adapter
 
         viewModel.ads.observe(this, Observer<PagedList<AdRoom>> {
-            ologx("Submitting ads list of size: ${it.size}")
+            ologx("Submitting Ads list, size: ${it.size}")
 
             adapter.submitList(it)
 

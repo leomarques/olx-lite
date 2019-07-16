@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="AppTheme.OrangeProgressBar">
+        <item name="colorAccent">@color/primary_orange</item>
+    </style>
+
+</resources>
