@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
 
 class TopazioService : AdService {
 
@@ -22,7 +23,8 @@ class TopazioService : AdService {
         }
 
         if (keyword.isNotEmpty()) {
-            queryParams += "&q=$keyword"
+            val encodedKeyword = URLEncoder.encode(keyword, "UTF-8")
+            queryParams += "&q=$encodedKeyword"
         }
 
         val query = buildQueryString(queryParams)

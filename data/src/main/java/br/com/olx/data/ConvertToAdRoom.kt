@@ -5,7 +5,7 @@ import br.com.olx.data.remote.AdRemote
 
 fun convertAdRemoteToAdRoom(adRemote: AdRemote): AdRoom {
     val thumbUrl = if (adRemote.thumbnail != null)
-        "${adRemote.thumbnail.baseUrl}/images${adRemote.thumbnail.path}"
+        "${adRemote.thumbnail.baseUrl}/thumbs256x256${adRemote.thumbnail.path}"
     else ""
 
     return AdRoom(
