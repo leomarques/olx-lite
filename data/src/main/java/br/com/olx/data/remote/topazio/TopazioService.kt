@@ -15,7 +15,11 @@ class TopazioService : AdService {
     private var page: String? = null
     private var pageCount = 0
 
-    override fun searchAds(keyword: String, onSuccess: (ads: List<AdRemote>, hasNextPage: Boolean) -> Unit, onError: (error: String) -> Unit, retry: Int) {
+    override fun searchAds(keyword: String,
+                           onSuccess: (ads: List<AdRemote>, hasNextPage: Boolean) -> Unit,
+                           onError: (error: String) -> Unit,
+                           retry: Int
+    ) {
         var queryParams = "lim=25"
 
         if (page != null && page?.isNotEmpty() == true) {

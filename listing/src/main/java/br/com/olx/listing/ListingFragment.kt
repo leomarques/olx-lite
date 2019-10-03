@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -21,7 +20,7 @@ import br.com.olx.data.DataInjection
 import br.com.olx.data.local.AdRoom
 import kotlinx.android.synthetic.main.listing_fragment.*
 
-class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
+class ListingFragment : Fragment() {
 
     private var noResultLoaded = false
     private var lastRefreshTime = 0L
@@ -31,9 +30,9 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
     private lateinit var viewModel: ListingViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.listing_fragment, container, false)
     }
@@ -44,8 +43,8 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
         setHasOptionsMenu(true)
 
         viewModel = ViewModelProviders.of(
-                this,
-                ViewModelFactory(DataInjection.provideRepository(activity!!))
+            this,
+            ViewModelFactory(DataInjection.provideRepository(activity!!))
         ).get(ListingViewModel::class.java)
 
         adList.layoutManager = LinearLayoutManager(context)
@@ -119,17 +118,6 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
         val context = ((context as AppCompatActivity).supportActionBar?.themedContext ?: context)
         val searchView = SearchView(context)
         searchView.queryHint = getString(R.string.kwsearch_hint)
-
-        val menuItem = menu.findItem(R.id.search)
-        menuItem.apply {
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
-            actionView = searchView
-        }
-
-        // When using the support library, the setOnActionExpandListener() method is
-        // static and accepts the MenuItem object as an argument
-        MenuItemCompat.setOnActionExpandListener(menuItem, this)
-
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(keyword: String): Boolean {
                 showLoading(true)
@@ -147,20 +135,26 @@ class ListingFragment : Fragment(), MenuItemCompat.OnActionExpandListener {
 
             override fun onQueryTextChange(newText: String) = false
         })
+
+        menu.findItem(R.id.search).apply {
+            setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
+            actionView = searchView
+            setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+                override fun onMenuItemActionExpand(menuItem: MenuItem) = true
+
+                override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
+                    showLoading(true)
+                    showIsRefreshing(false)
+                    showNoResult(false)
+                    showList(false)
+
+                    searchAds("")
+
+                    return true
+                }
+            })
+        }
     }
-
-    override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-        showLoading(true)
-        showIsRefreshing(false)
-        showNoResult(false)
-        showList(false)
-
-        searchAds("")
-
-        return true
-    }
-
-    override fun onMenuItemActionExpand(item: MenuItem?) = true
 
     private fun hideKeyboard() {
         if (context == null || view == null)
