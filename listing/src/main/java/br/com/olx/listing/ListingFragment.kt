@@ -69,10 +69,14 @@ class ListingFragment : Fragment() {
         viewModel.networkErrors.observe(this, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
 
-            showLoading(false)
+            showNewSearchLoading(false)
             showIsRefreshing(false)
             showNoResult(false)
             showList(true)
+        })
+
+        viewModel.isRequestInProgress.observe(this, Observer {
+            showPagingLoading(!preparingNewSearch && it)
         })
 
         setPullToRefreshColor()
@@ -96,12 +100,12 @@ class ListingFragment : Fragment() {
     private fun showContent(isListNotEmpty: Boolean) {
         if (!preparingNewSearch) {
             if (isListNotEmpty) {
-                showLoading(false)
+                showNewSearchLoading(false)
                 showIsRefreshing(false)
                 showNoResult(false)
                 showList(true)
             } else {
-                showLoading(false)
+                showNewSearchLoading(false)
                 showIsRefreshing(false)
                 showNoResult(true)
                 showList(false)
@@ -120,7 +124,7 @@ class ListingFragment : Fragment() {
         searchView.queryHint = getString(R.string.kwsearch_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(keyword: String): Boolean {
-                showLoading(true)
+                showNewSearchLoading(true)
                 showIsRefreshing(false)
                 showNoResult(false)
                 showList(false)
@@ -143,7 +147,7 @@ class ListingFragment : Fragment() {
                 override fun onMenuItemActionExpand(menuItem: MenuItem) = true
 
                 override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
-                    showLoading(true)
+                    showNewSearchLoading(true)
                     showIsRefreshing(false)
                     showNoResult(false)
                     showList(false)
@@ -188,8 +192,12 @@ class ListingFragment : Fragment() {
         adList.visibility = if (show) View.VISIBLE else View.INVISIBLE
     }
 
-    private fun showLoading(show: Boolean) {
-        progressBar.visibility = if (show) View.VISIBLE else View.INVISIBLE
+    private fun showNewSearchLoading(show: Boolean) {
+        newSearchProgressBar.visibility = if (show) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun showPagingLoading(show: Boolean) {
+        pagingProgressBar.visibility = if (show) View.VISIBLE else View.INVISIBLE
     }
 
     private fun showNoResult(show: Boolean) {

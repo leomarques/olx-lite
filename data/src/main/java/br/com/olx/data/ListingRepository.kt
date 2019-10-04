@@ -18,6 +18,7 @@ class ListingRepository(
         val boundaryCallback = AdBoundaryCallback(service, cache, keyword)
         val networkErrors = boundaryCallback.networkErrors
         val responseSize = boundaryCallback.responseSize
+        val isRequestInProgress = boundaryCallback.isRequestInProgress
 
         val config: PagedList.Config = PagedList.Config.Builder()
                 .setPrefetchDistance(15)
@@ -32,6 +33,6 @@ class ListingRepository(
                 .setBoundaryCallback(boundaryCallback)
                 .build()
 
-        return AdSearchResult(data, networkErrors, responseSize)
+        return AdSearchResult(data, networkErrors, responseSize, isRequestInProgress)
     }
 }

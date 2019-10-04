@@ -27,6 +27,8 @@ class ListingViewModel(private val repository: Repository) : ViewModel() {
 
     val networkErrors: LiveData<String> = Transformations.switchMap(adSearchResult) { it.networkErrors }
 
+    val isRequestInProgress: LiveData<Boolean> = Transformations.switchMap(adSearchResult) { it.isRequestInProgress }
+
     fun searchAds(keyword: String) {
         keywordLiveData.postValue(keyword)
     }

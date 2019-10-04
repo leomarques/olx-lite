@@ -5,7 +5,8 @@ import androidx.paging.PagedList
 import br.com.olx.data.local.AdRoom
 
 data class AdSearchResult(
-        val data: LiveData<PagedList<AdRoom>>,
-        val networkErrors: LiveData<String>,
-        val responseSize: LiveData<Int>
+    val data: LiveData<PagedList<AdRoom>>,
+    val networkErrors: LiveData<String>,
+    val responseSize: LiveData<Int>,
+    val isRequestInProgress: LiveData<Boolean>
 )
