@@ -1,0 +1,8 @@
+apply from: "$rootDir/apply-android-lib.gradle"
+
+dependencies {
+    implementation project(':common')
+
+    implementation libraries.appcompat
+    implementation libraries.constraintlayout
+}

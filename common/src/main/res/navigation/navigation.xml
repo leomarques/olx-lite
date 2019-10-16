@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/listing_fragment"
-        android:name="br.com.olx.listing.ListingFragment"
+        android:name="br.com.olx.android.adview.AdviewFragment"
         android:label="Listing">
     </fragment>
 </navigation>

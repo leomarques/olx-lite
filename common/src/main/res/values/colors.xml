@@ -5,4 +5,7 @@
     <color name="primary_green">#84d43e</color>
 
     <color name="purple_dark">#5206AE</color>
+
+    <color name="gray">#999</color>
+    <color name="gray_light">#f2f2f2</color>
 </resources>

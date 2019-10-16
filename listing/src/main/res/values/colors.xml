@@ -2,6 +2,4 @@
 <resources>
     <color name="listitem_price">#4a4a4a</color>
     <color name="listitem_title">#4a4a4a</color>
-    <color name="gray">#999</color>
-    <color name="gray_light">#f2f2f2</color>
 </resources>
