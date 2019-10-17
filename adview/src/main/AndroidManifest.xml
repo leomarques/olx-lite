@@ -1,5 +1,5 @@
 <manifest xmlns:dist="http://schemas.android.com/apk/distribution"
-    package="br.com.olx.android.adview">
+    package="br.com.olx.adview">
 
     <dist:module
         dist:instant="true"
@@ -10,4 +10,3 @@
         <dist:fusing dist:include="false" />
     </dist:module>
 </manifest>
-

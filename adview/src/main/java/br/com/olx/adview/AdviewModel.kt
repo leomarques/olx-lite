@@ -1,4 +1,4 @@
-package br.com.olx.android.adview
+package br.com.olx.adview
 
 data class AdviewModel(
     val images: List<String>,

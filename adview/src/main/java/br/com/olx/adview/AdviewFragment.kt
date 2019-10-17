@@ -1,4 +1,4 @@
-package br.com.olx.android.adview
+package br.com.olx.adview
 
 import android.os.Bundle
 import android.view.LayoutInflater
