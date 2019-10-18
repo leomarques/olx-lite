@@ -13,5 +13,6 @@ data class AdRoom(
         val oldPrice: String,
         val date: String,
         val location: String,
-        val isFeatured: Boolean
+        val isFeatured: Boolean,
+        val sellerName: String
 )

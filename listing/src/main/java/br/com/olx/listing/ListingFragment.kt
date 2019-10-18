@@ -57,12 +57,12 @@ class ListingFragment : Fragment() {
         viewModel = ViewModelProviders.of(
             this,
             ViewModelFactory(DataInjection.provideRepository(activity!!))
-        ).get(ListingViewModel::class.java)
+        )[ListingViewModel::class.java]
 
         adList.layoutManager = LinearLayoutManager(context)
 
-        val adapter = AdsAdapter(imageLoader) {
-            navigateToAdview(this)
+        val adapter = AdsAdapter(imageLoader) { adRoom: AdRoom ->
+            navigateToAdview(convertToAdviewNavigationModel(adRoom), this)
         }
         adList.adapter = adapter
 

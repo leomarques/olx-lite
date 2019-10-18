@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import br.com.olx.common.AdviewNavigationModel
 import br.com.olx.common.imageloader.GlideImageLoader
 import kotlinx.android.synthetic.main.adview_fragment.*
 
@@ -24,6 +25,7 @@ class AdviewFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         val ad = getAd()
+        ad ?: return
 
         imageLoader.loadImage(context!!, ad.images[0], image, null, null)
 
@@ -35,15 +37,10 @@ class AdviewFragment : Fragment() {
         seller_name.text = getString(R.string.adview_seller, ad.sellerName)
     }
 
-    private fun getAd() = AdviewModel(
-        listOf("https://img.olx.com.br/images/13/134905038475847.jpg"),
-        "R$119.900",
-        "R$12.345",
-        "Volkswagen Golf GTI 4P",
-        "Publicado em 16/10 ás 17:09",
-        "vale bem menos do q vc pensa",
-        "Aristarco Pederneiras",
-        "997339174"
-    )
+    private fun getAd(): AdviewModel? {
+        val ad = arguments?.get("ad") as? AdviewNavigationModel ?: return null
+
+        return convertToAdviewModel(ad)
+    }
 
 }

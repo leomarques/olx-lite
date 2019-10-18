@@ -20,7 +20,7 @@ class AdViewHolder(
     view: View,
     private val context: Context,
     private val imageLoader: ImageLoader,
-    private val onListItemClick: () -> Unit
+    private val onListItemClick: (AdRoom) -> Unit
 ) : RecyclerView.ViewHolder(view) {
 
     private val title: TextView = view.findViewById(R.id.title)
@@ -72,7 +72,7 @@ class AdViewHolder(
             } else
                 featured.visibility = View.GONE
 
-            rootLayout.setOnClickListener { onListItemClick() }
+            rootLayout.setOnClickListener { onListItemClick(ad) }
         }
     }
 
@@ -83,7 +83,7 @@ class AdViewHolder(
         fun create(
             parent: ViewGroup,
             imageLoader: ImageLoader,
-            onListItemClick: () -> Unit
+            onListItemClick: (AdRoom) -> Unit
         ): AdViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.ad_view_item, parent, false)

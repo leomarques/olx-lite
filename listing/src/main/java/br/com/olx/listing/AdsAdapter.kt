@@ -9,7 +9,7 @@ import br.com.olx.data.local.AdRoom
 
 class AdsAdapter(
     private val imageLoader: ImageLoader,
-    private val onListItemClick: () -> Unit
+    private val onListItemClick: (AdRoom) -> Unit
 )
     : PagedListAdapter<AdRoom, RecyclerView.ViewHolder>(AD_COMPARATOR) {
 

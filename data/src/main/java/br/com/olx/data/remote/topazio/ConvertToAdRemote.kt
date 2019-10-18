@@ -10,14 +10,15 @@ fun convertToAdRemote(it: Ads1): AdRemote {
     }
 
     return AdRemote(
-            it.listId?.toString(),
-            it.subject,
-            it.body,
-            it.origListTime,
-            it.priceValue,
-            it.oldPrice,
-            it.location,
-            it.thumbnail,
-            isFeatured
+        it.listId?.toString(),
+        it.subject,
+        it.body,
+        it.origListTime,
+        it.priceValue,
+        it.oldPrice,
+        it.location,
+        it.thumbnail,
+        isFeatured,
+        it.user?.name
     )
 }

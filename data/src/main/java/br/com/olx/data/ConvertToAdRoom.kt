@@ -9,14 +9,15 @@ fun convertAdRemoteToAdRoom(adRemote: AdRemote): AdRoom {
     else ""
 
     return AdRoom(
-            adRemote.listId ?: "",
-            thumbUrl,
-            adRemote.subject ?: "",
-            adRemote.body ?: "",
-            adRemote.price ?: "",
-            adRemote.oldPrice ?: "",
-            adRemote.time?.toString() ?: "",
-            adRemote.location?.neighbourhood ?: "",
-            adRemote.isFeatured ?: false
+        adRemote.listId ?: "",
+        thumbUrl,
+        adRemote.subject ?: "",
+        adRemote.body ?: "",
+        adRemote.price ?: "",
+        adRemote.oldPrice ?: "",
+        adRemote.time?.toString() ?: "",
+        adRemote.location?.neighbourhood ?: "",
+        adRemote.isFeatured ?: false,
+        adRemote.sellerName ?: ""
     )
 }
