@@ -8,7 +8,7 @@ fun convertToAdviewModel(ad: AdviewNavigationModel) = AdviewModel(
     ad.oldPrice,
     ad.title,
     ad.origListTime,
-    ad.description,
+    ad.description.replace("<br>", "\n"),
     ad.sellerName,
     ad.phone
 )
