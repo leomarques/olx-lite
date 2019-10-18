@@ -15,6 +15,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.olx.common.FontProvider
 import br.com.olx.common.imageloader.GlideImageLoader
+import br.com.olx.common.navigateToAdview
 import br.com.olx.common.ologx
 import br.com.olx.data.DataInjection
 import br.com.olx.data.local.AdRoom
@@ -23,24 +24,35 @@ import kotlinx.android.synthetic.main.listing_fragment.*
 class ListingFragment : Fragment() {
 
     private var noResultLoaded = false
-    private var lastRefreshTime = 0L
-    private val refreshCooldownMiliseconds = 5000L
     private var preparingNewSearch = false
+    private var viewWasReused = false
+    private var lastRefreshTime = 0L
+    private val refreshCooldownMilliseconds = 5000L
     private val imageLoader = GlideImageLoader()
     private lateinit var viewModel: ListingViewModel
+    private var inflatedView: View? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.listing_fragment, container, false)
+        if (inflatedView == null) {
+            inflatedView = inflater.inflate(R.layout.listing_fragment, container, false)
+            viewWasReused = false
+        } else {
+            viewWasReused = true
+        }
+        return inflatedView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         setHasOptionsMenu(true)
+
+        if (viewWasReused)
+            return
 
         viewModel = ViewModelProviders.of(
             this,
@@ -49,7 +61,9 @@ class ListingFragment : Fragment() {
 
         adList.layoutManager = LinearLayoutManager(context)
 
-        val adapter = AdsAdapter(imageLoader)
+        val adapter = AdsAdapter(imageLoader) {
+            navigateToAdview(this)
+        }
         adList.adapter = adapter
 
         viewModel.ads.observe(this, Observer<PagedList<AdRoom>> {
@@ -170,7 +184,7 @@ class ListingFragment : Fragment() {
 
     private fun shouldRefresh(): Boolean {
         val currentTime = System.currentTimeMillis()
-        if (currentTime - lastRefreshTime > refreshCooldownMiliseconds) {
+        if (currentTime - lastRefreshTime > refreshCooldownMilliseconds) {
             lastRefreshTime = currentTime
             return true
         }
