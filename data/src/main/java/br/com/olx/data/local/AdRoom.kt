@@ -8,9 +8,10 @@ data class AdRoom(
         @PrimaryKey val id: String,
         val thumbUrl: String,
         val title: String,
+        val description: String,
         val price: String,
+        val oldPrice: String,
         val date: String,
         val location: String,
-        val oldPrice: String,
         val isFeatured: Boolean
 )

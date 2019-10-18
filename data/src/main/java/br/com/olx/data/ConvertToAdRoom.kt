@@ -12,10 +12,11 @@ fun convertAdRemoteToAdRoom(adRemote: AdRemote): AdRoom {
             adRemote.listId ?: "",
             thumbUrl,
             adRemote.subject ?: "",
+            adRemote.body ?: "",
             adRemote.price ?: "",
+            adRemote.oldPrice ?: "",
             adRemote.time?.toString() ?: "",
             adRemote.location?.neighbourhood ?: "",
-            adRemote.oldPrice ?: "",
             adRemote.isFeatured ?: false
     )
 }

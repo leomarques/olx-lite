@@ -20,40 +20,32 @@ data class Ads(
 )
 
 data class Ads1(
-        @SerializedName("listId")
+    @SerializedName("listId")
     val listId: Int?,
-        @SerializedName("rankId")
-    val rankId: String?,
-        @SerializedName("lastBumpAgeSecs")
-    val lastBumpAgeSecs: String?,
-        @SerializedName("isFavorited")
-    val isFavorited: Boolean?,
-        @SerializedName("subject")
+    @SerializedName("body")
+    val body: String?,
+    @SerializedName("subject")
     val subject: String?,
-        @SerializedName("origListTime")
+    @SerializedName("origListTime")
     val origListTime: Long?,
-        @SerializedName("priceValue")
+    @SerializedName("priceValue")
     val priceValue: String?,
-        @SerializedName("oldPrice")
+    @SerializedName("oldPrice")
     val oldPrice: String?,
-        @SerializedName("professionalAd")
-    val professionalAd: Boolean?,
-        @SerializedName("featured")
+    @SerializedName("featured")
     val featured: List<Any?>,
-        @SerializedName("location")
+    @SerializedName("location")
     val location: Location,
-        @SerializedName("images")
+    @SerializedName("images")
     val images: List<Image?>,
-        @SerializedName("properties")
+    @SerializedName("properties")
     val properties: List<Properties>,
-        @SerializedName("thumbnail")
+    @SerializedName("thumbnail")
     val thumbnail: Thumbnail?,
-        @SerializedName("user")
+    @SerializedName("user")
     val user: User?,
-        @SerializedName("phone")
-    val phone: Phone?,
-        @SerializedName("adReply")
-    val adReply: String?
+    @SerializedName("phone")
+    val phone: Phone?
 )
 
 data class Location(
@@ -68,6 +60,8 @@ data class Location(
 data class Properties(
     @SerializedName("name")
     val name: String?,
+    @SerializedName("label")
+    val label: String?,
     @SerializedName("value")
     val value: String?
 )

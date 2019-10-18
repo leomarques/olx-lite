@@ -6,14 +6,11 @@ fun buildQueryString(queryParams: String): String {
             "pagination      " +
             "ads {        " +
             "listId        " +
-            "rankId        " +
-            "lastBumpAgeSecs        " +
-            "isFavorited        " +
+            "body        " +
             "subject        " +
             "origListTime        " +
             "priceValue        " +
             "oldPrice        " +
-            "professionalAd        " +
             "featured        " +
             "location {          " +
             "neighbourhood          " +
@@ -24,6 +21,7 @@ fun buildQueryString(queryParams: String): String {
             "path        }        " +
             "properties {          " +
             "name          " +
+            "label          " +
             "value        }        " +
             "thumbnail {          " +
             "baseUrl          " +
@@ -35,7 +33,7 @@ fun buildQueryString(queryParams: String): String {
             "phone          " +
             "phoneHidden          " +
             "phoneVerified        }        " +
-            "adReply      }    }  }  \"" +
+            "      }    }  }  \"" +
             ",\"variables\":{\"queryString\":\"$queryParams\"}" +
             ",\"operationName\":\"getAdsFromQueryString\"}"
 }
