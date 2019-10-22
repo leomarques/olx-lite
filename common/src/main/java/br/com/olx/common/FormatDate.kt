@@ -1,4 +1,4 @@
-package br.com.olx.listing
+package br.com.olx.common
 
 import java.sql.Timestamp
 import java.text.SimpleDateFormat

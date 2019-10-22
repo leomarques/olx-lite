@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="adview_seller">%1$s (anunciante)</string>
+    <string name="adview_publish_date">Publicado em %1$s</string>
     <string name="adview_description_title">Descrição</string>
 </resources>

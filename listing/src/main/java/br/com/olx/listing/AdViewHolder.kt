@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import br.com.olx.common.FontProvider
+import br.com.olx.common.formatDate
 import br.com.olx.common.imageloader.ImageLoader
 import br.com.olx.data.local.AdRoom
 

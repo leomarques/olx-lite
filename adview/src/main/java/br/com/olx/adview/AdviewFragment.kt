@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import br.com.olx.common.AdviewNavigationModel
+import br.com.olx.common.formatDate
 import br.com.olx.common.imageloader.GlideImageLoader
 import kotlinx.android.synthetic.main.adview_fragment.*
 
@@ -32,7 +33,7 @@ class AdviewFragment : Fragment() {
         price.text = ad.price
         old_price.text = ad.oldPrice
         title.text = ad.title
-        published_date.text = ad.origListTime
+        published_date.text = getString(R.string.adview_publish_date, formatDate(ad.origListTime))
         description.text = ad.description
         seller_name.text = getString(R.string.adview_seller, ad.sellerName)
     }
