@@ -1,5 +1,6 @@
 package br.com.olx.adview
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +39,7 @@ class AdviewFragment : Fragment() {
 
         old_price.text = ad.oldPrice
         old_price.typeface = FontProvider.getNunitoSansRegularTypeFace(context!!)
+        old_price.paintFlags = old_price.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 
         title.text = ad.title
         title.typeface = FontProvider.getNunitoSansRegularTypeFace(context!!)
