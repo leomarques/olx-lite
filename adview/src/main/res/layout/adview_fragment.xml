@@ -20,6 +20,7 @@
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="275dp"
+                android:background="@color/gray_light"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
@@ -31,7 +32,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:textSize="34sp"
+                android:textSize="36sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image" />
 
@@ -41,7 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/gray"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/price" />
@@ -52,8 +54,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:textSize="20sp"
+                android:layout_marginTop="4dp"
+                android:textSize="22sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/old_price" />
 
@@ -63,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
+                android:textColor="@color/gray"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -73,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="16dp"
-                android:background="@color/gray_light"
+                android:background="@color/gray_lighter"
                 app:layout_constraintTop_toBottomOf="@+id/published_date" />
 
             <TextView
@@ -97,6 +100,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description_title" />
@@ -107,7 +111,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray_light"
+        android:background="@color/gray_lighter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -115,14 +119,14 @@
             android:id="@+id/top_border"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/gray"
+            android:background="@color/gray_light"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/seller_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

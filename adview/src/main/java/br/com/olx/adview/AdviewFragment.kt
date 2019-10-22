@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import br.com.olx.common.AdviewNavigationModel
+import br.com.olx.common.FontProvider
 import br.com.olx.common.formatDate
 import br.com.olx.common.imageloader.GlideImageLoader
 import kotlinx.android.synthetic.main.adview_fragment.*
@@ -28,14 +29,29 @@ class AdviewFragment : Fragment() {
         val ad = getAd()
         ad ?: return
 
-        imageLoader.loadImage(context!!, ad.images[0], image, null, null)
+        val url = if (ad.images.isNotEmpty()) ad.images[0] else ""
+        if (url.isNotEmpty())
+            imageLoader.loadImage(context!!, url, image, null, null)
 
         price.text = ad.price
+        price.typeface = FontProvider.getNunitoSansRegularTypeFace(context!!)
+
         old_price.text = ad.oldPrice
+        old_price.typeface = FontProvider.getNunitoSansRegularTypeFace(context!!)
+
         title.text = ad.title
+        title.typeface = FontProvider.getNunitoSansRegularTypeFace(context!!)
+
         published_date.text = getString(R.string.adview_publish_date, formatDate(ad.origListTime))
+        published_date.typeface = FontProvider.getNunitoSansRegularTypeFace(context!!)
+
+        description_title.typeface = FontProvider.getNunitoSansBoldTypeFace(context!!)
+
         description.text = ad.description
+        description.typeface = FontProvider.getNunitoSansRegularTypeFace(context!!)
+
         seller_name.text = getString(R.string.adview_seller, ad.sellerName)
+        seller_name.typeface = FontProvider.getNunitoSansRegularTypeFace(context!!)
     }
 
     private fun getAd(): AdviewModel? {
