@@ -54,6 +54,8 @@ class ListingFragment : Fragment() {
         if (viewWasReused)
             return
 
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+
         viewModel = ViewModelProviders.of(
             this,
             ViewModelFactory(DataInjection.provideRepository(activity!!))

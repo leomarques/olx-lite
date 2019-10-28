@@ -10,5 +10,6 @@ dependencies {
     implementation libraries.cardview
     implementation libraries.paging
     implementation libraries.room
+    implementation libraries.design
     kapt libraries.roomcompiler
 }
