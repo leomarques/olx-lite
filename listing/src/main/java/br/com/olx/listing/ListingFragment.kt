@@ -55,6 +55,7 @@ class ListingFragment : Fragment() {
             return
 
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+        bottom_navigation_view.setOnNavigationItemSelectedListener(BottomNavigationViewListener(this))
 
         viewModel = ViewModelProviders.of(
             this,

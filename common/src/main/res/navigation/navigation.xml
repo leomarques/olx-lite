@@ -6,13 +6,7 @@
     <fragment
         android:id="@+id/listing_fragment"
         android:name="br.com.olx.listing.ListingFragment"
-        android:label="Listing">
-
-        <action
-            android:id="@+id/action_listing_to_adview"
-            app:destination="@id/adview_fragment" />
-
-    </fragment>
+        android:label="Listing" />
 
     <fragment
         android:id="@+id/adview_fragment"
